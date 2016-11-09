@@ -15,13 +15,12 @@ const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
  * What it actually does it wraps GET request to promise and after it has resolved
  * calls setState Action Creator.
  */
-function* getApps() {
+export function* getApps() {
   try {
     const data = yield call(request.get, (BASE_URL + 'applications') );
     yield put(ac.setState( {apps: data.data} ));
   } catch (err) {
     yield put(ac.setState( { apps: [] } ) );
-    console.log(err,"get apps");
   }
 
 }
@@ -31,7 +30,7 @@ function* getApps() {
  * Uses data.data since axios return object is full of everything.
  * And we only want actual return payload.
  */
-function* postApp(action){
+export function* postApp(action){
   try {
     const data = yield call( request.post, (BASE_URL + 'applications'), { name: action.name } );
     yield put( ac.addApplication(data.data) );
@@ -45,7 +44,7 @@ function* postApp(action){
  *  Gets id from action and calls backend to delete given
  */
 
-function* deleteApp(action){
+export function* deleteApp(action){
   try{
     const data = yield call( request.delete, (BASE_URL + 'applications/' + action.id),  );
     yield put( ac.removeApplication(action.id) );
