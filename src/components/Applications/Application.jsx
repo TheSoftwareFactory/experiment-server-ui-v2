@@ -1,15 +1,12 @@
-import React, {Component} from 'react'
+/* Currently unused class. 
+import React from 'react'
 
-//TODO maybe replace this with HOC
-
-export default class Application extends Component{
-
-  render(){
-    return (<p key={this.props.name}>
+export const Application = ({ name, id, onDeleteClick }) => {
+    return (<p key={name}>
     <button >
-      <h1>{this.props.name}</h1>
+      <h1>{name}</h1>
     </button>
-      <button onClick={() => this.props.onDeleteClick(this.props.id)}>Delete</button>
+      <button onClick={() => onDeleteClick(id)}>Delete</button>
     </p>)
-  }
 }
+*/
