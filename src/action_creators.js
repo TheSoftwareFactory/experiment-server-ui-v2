@@ -11,6 +11,7 @@
 
 /*
 * These are actual ASYNC action calls from UI components
+* These are passed to sagas. 
 */
 export function getApplications() {
   return {

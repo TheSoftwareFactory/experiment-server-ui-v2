@@ -5,6 +5,10 @@ import request from 'axios'
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
 
 /**
+ * TODO: Add error cathing;
+ */
+
+/**
  * Function to get all Applications from backend, uses Redux-Saga middleware
  * to make calls allmost syncronius. Also easy to test.
  *
@@ -12,24 +16,42 @@ const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
  * calls setState Action Creator.
  */
 function* getApps() {
-  const data = yield call(request.get, (BASE_URL + 'applications') );
-  yield put(ac.setState( {apps: data.data} ));
+  try {
+    const data = yield call(request.get, (BASE_URL + 'applications') );
+    yield put(ac.setState( {apps: data.data} ));
+  } catch (err) {
+    yield put(ac.setState( { apps: [] } ) );
+    console.log(err,"get apps");
+  }
+
 }
 
 /**
  * Function to Post new Application to DB.
  * Uses data.data since axios return object is full of everything.
- * And we only want actual return payload. 
+ * And we only want actual return payload.
  */
 function* postApp(action){
-  const data = yield call( request.post, (BASE_URL + 'applications'), { name: action.name } );
-  yield put( ac.addApplication(data.data) );
+  try {
+    const data = yield call( request.post, (BASE_URL + 'applications'), { name: action.name } );
+    yield put( ac.addApplication(data.data) );
+  } catch (err) {
+    console.log(err);
+    yield put(ac.erroScreen(err))
+  }
 }
 
+/**
+ *  Gets id from action and calls backend to delete given
+ */
 
 function* deleteApp(action){
-  const data = yield call( request.delete, (BASE_URL + 'applications/' + action.id),  );
-  yield put( ac.removeApplication(action.id) );
+  try{
+    const data = yield call( request.delete, (BASE_URL + 'applications/' + action.id),  );
+    yield put( ac.removeApplication(action.id) );
+  } catch(err){
+    console.log(err);
+  }
 }
 /**
  * Since you have to tell saga how you want your actions handled
@@ -37,7 +59,7 @@ function* deleteApp(action){
  * takeEvery means saga creates buffer and listens every one incoming actions
  * and handles them one by one.
  */
-function* getSaga(){
+function* getApplicationsSaga(){
     yield* takeEvery("GET_APPLICATIONS", getApps);
 }
 
@@ -53,6 +75,6 @@ function* deleteApplicationSaga(){
  */
 
 export function* rootSaga() {
-    yield[getSaga(),postSaga(),deleteApplicationSaga()]
+    yield[getApplicationsSaga(),postSaga(),deleteApplicationSaga()]
 
 }
