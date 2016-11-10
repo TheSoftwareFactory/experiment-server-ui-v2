@@ -4,6 +4,17 @@ import * as ac from './../src/action_creators.js'
 import request from 'axios'
 import {assert} from 'chai'
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
+/**
+ * TODO Maybe add more errortests and separate logic to other files
+ * like saga_application_spec.js
+ */
+
+ /**
+  * These are tests for Sagas.
+  * Since Sagas are actually generator functions in each test we create
+  * a generator and simply call 'next' value of it asserting it deeply with that
+  * saga's current 'state'.
+  */
 
 describe('Saga', () => {
   it('works when the getApps request', () => {

@@ -4,8 +4,9 @@ import {getApplications} from '../../action_creators.js'
 
 /**
  * This is High Order Component for Application.
- * Might redo to a class if needed. 
+ * Might redo to a class if needed.
  */
+
 export const Application = ({ name, id, onDeleteClick }) => {
     return (<p key={name}>
     <button >
@@ -15,7 +16,7 @@ export const Application = ({ name, id, onDeleteClick }) => {
     </p>)
 }
 
-export class ApplicationsHOC extends Component {
+export class Applications extends Component {
 
 render(){
   const handleSubmit = event => {
@@ -40,4 +41,4 @@ render(){
   }
 }
 
-export default ApplicationsHOC
+//export default ApplicationsHOC

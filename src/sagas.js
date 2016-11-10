@@ -5,12 +5,9 @@ import request from 'axios'
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
 
 /**
- * TODO: Add error cathing;
- */
-
-/**
  * Function to get all Applications from backend, uses Redux-Saga middleware
- * to make calls allmost syncronius. Also easy to test.
+ * to make calls allmost syncronius. Also very easy to test.
+ * Please use export syntax before function* call to pass function* to tests.
  *
  * What it actually does it wraps GET request to promise and after it has resolved
  * calls setState Action Creator.

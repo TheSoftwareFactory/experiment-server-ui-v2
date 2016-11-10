@@ -4,21 +4,26 @@ import {
   renderIntoDocument,
   scryRenderedDOMComponentsWithTag
 } from 'react-addons-test-utils';
-import Applications from '../../src/components/Applications/Applications.jsx';
+import {Applications} from '../../src/components/Applications/ApplicationHOC.jsx';
 import {expect} from 'chai';
+import {List, Map, fromJS} from 'immutable'
 
 describe('Applications', () => {
   //this does not work, please fix, somehow to work.
-  it('renders list of applications', () => {
-    /*
-    const component = renderIntoDocument(
-      <Applications apps={['Math Game', 'Temo', 'Test Game', 'Peli']} />
-    );
-    const buttons = scryRenderedDOMComponentsWithTag(component, 'button');
+  it('renders an application', () => {
+    let kaikki = fromJS([{"id": 1, "name": "testiAppi"}])
+    const component = renderIntoDocument(<Applications apps={kaikki} />)
 
-    expect(buttons.length).to.equal(4);
-    expect(buttons[0].textContent).to.equal('Peli');
-    expect(buttons[3].textContent).to.equal('Temooooo');
-    */
+    const buttons = scryRenderedDOMComponentsWithTag(component, 'button');
+    /**
+     * In here first button is 'create new application'
+     * second is actual element
+     * and last one is delete element button. 
+     * Correct number of buttons is 2n-1
+     * Yes fix this when proper app structure
+     */
+    expect(buttons.length).to.equal(3);
+    expect(buttons[1].textContent).to.equal('testiAppi');
+
   });
 });
