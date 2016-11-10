@@ -2,6 +2,7 @@ import { takeEvery, takeLatest } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 import * as ac from './action_creators.js'
 import request from 'axios'
+import {fromJS} from 'immutable'
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
 
 /**
@@ -17,7 +18,7 @@ export function* getApps() {
     const data = yield call(request.get, (BASE_URL + 'applications') );
     yield put(ac.setState( {apps: data.data} ));
   } catch (err) {
-    yield put(ac.setState( { apps: [] } ) );
+    yield put(ac.setState({ apps:[]}));
   }
 
 }

@@ -1,7 +1,7 @@
 import React from 'react'
 import {Route} from 'react-router';
 import Users from './components/Users.jsx'
-import {ApplicationAdder} from './components/Applications/CreateApplication.jsx'
+import {Applications} from './components/Applications/Applications.jsx'
 import App from './components/App.jsx'
 
 /**
@@ -10,7 +10,7 @@ import App from './components/App.jsx'
 
 const routes = (
  <Route component={App}>
-  <Route path="/" component={ApplicationAdder} />
+  <Route path="/" component={Applications} />
   <Route path="/users" component={Users} />
 </Route> );
 
