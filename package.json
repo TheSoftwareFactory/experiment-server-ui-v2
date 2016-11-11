@@ -7,9 +7,9 @@
     "test": "mocha --compilers js:babel-core/register --require babel-polyfill --require ./test/test_helper.js \"test/**/*@(.js|.jsx)\"",
     "test:watch": "npm run test -- --watch --watch-extensions jsx"
   },
-  "keywords": [],
+  "keywords": ["React","Redux","Redux-Saga","Frontend"],
   "author": "Timo Tuononen",
-  "license": "ISC",
+  "license": "MIT",
   "babel": {
     "presets": [
       "es2015",
