@@ -36,6 +36,15 @@ function removeApplication(state,removeId){
   return state.set('apps',splicedList); //set it to new state.
 }
 
+function setApplicationData(state, data){
+  console.log(data,"data");
+  console.log(state.get('apps').toList(),"state");
+  let parsed = removeApplication(state, data.id)
+  console.log(parsed.get('apps').toList(),"parsed");
+  let uusi= addApplication(parsed, data)
+  console.log(uusi.get('apps').toList(),"uusi");
+  return uusi;
+}
 
 /**
  * Reducer to listen state modifing action creators.
@@ -47,7 +56,9 @@ export default function(state = Map(), action) {
     case 'ADD_APPLICATION':
        return addApplication(state, action.app);
     case 'REMOVE_APPLICATION':
-      return removeApplication(state, action.id)
+      return removeApplication(state, action.id);
+    case 'SET_APPLICATION_DATA':
+      return setApplicationData(state, action.data);
     }
   return state;
 

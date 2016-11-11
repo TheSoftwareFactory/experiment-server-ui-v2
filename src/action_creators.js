@@ -11,7 +11,7 @@
 
 /*
 * These are actual ASYNC action calls from UI components
-* These are passed to sagas. 
+* These are passed to sagas.
 */
 export function getApplications() {
   return {
@@ -28,6 +28,12 @@ export function postApplication(name) {
 export function deleteApplication(id) {
   return {
     type: 'DELETE_APPLICATION',
+    id
+  };
+}
+export function getApplicationData(id) {
+  return {
+    type: 'GET_APPLICATION_DATA',
     id
   };
 }
@@ -53,5 +59,11 @@ export function removeApplication(id) {
   return {
     type: 'REMOVE_APPLICATION',
     id
+  };
+}
+export function setApplicationData(data) {
+  return {
+    type: 'SET_APPLICATION_DATA',
+    data
   };
 }

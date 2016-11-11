@@ -50,6 +50,15 @@ export function* deleteApp(action){
     console.log(err);
   }
 }
+
+export function* getAppData(action){
+  try{
+    const data = yield call(request.get, (BASE_URL + 'applications/' + action.id + '/data') );
+    yield put( ac.setApplicationData(data.data) )
+  } catch(err){
+    console.log(err)
+  }
+}
 /**
  * Since you have to tell saga how you want your actions handled
  * there needs to some listerner methods.
@@ -66,12 +75,15 @@ function* postSaga(){
 function* deleteApplicationSaga(){
       yield* takeEvery("DELETE_APPLICATION", deleteApp)
 }
+function* getApplicationDataSaga(){
+  yield* takeEvery("GET_APPLICATION_DATA", getAppData)
+}
 
 /**
  * And rootSaga to implement all Sagas to store.
  */
 
 export function* rootSaga() {
-    yield[getApplicationsSaga(),postSaga(),deleteApplicationSaga()]
+    yield[getApplicationDataSaga(),getApplicationsSaga(),postSaga(),deleteApplicationSaga()]
 
 }
