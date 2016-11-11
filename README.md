@@ -6,5 +6,6 @@ This is a new version of Expreriment-Server-Ui. Backend project can be found htt
   Redux-Saga
   Babel
   Immutable
+  Axios
 
 To run use npm install and webpack-dev-server. 
