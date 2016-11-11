@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {getApplications} from '../../action_creators.js'
+import {getApplications, postApplication,deleteApplication} from '../../action_creators.js'
 import {connect} from 'react-redux';
 import {Header} from "../generals/Generals.jsx";
+import {ModalClass, openModal} from "../generals/Modals.jsx";
 import {fromJS} from 'immutable';
 
 
@@ -9,7 +10,7 @@ import {fromJS} from 'immutable';
  * This is High Order Component for Application.
  * Might redo to a class if needed.
  */
-export const Application = ({ name, id, onDeleteClick }) => {
+export const ApplicationSmallBox = ({ name, id, onDeleteClick }) => {
     return (
       <div className="Application" key={name}>
         <div className="ApplicationBox">
@@ -26,23 +27,33 @@ export const Application = ({ name, id, onDeleteClick }) => {
 export class ApplicationsBase extends Component {
 
 render(){
-  const handleSubmit = event => {
-    event.preventDefault();
-    this.props.onClick(this.refs.applicationName.value);
-    this.refs.applicationName.value = "";
+  const handleSubmit = value => {
+    this.props.onClick(value);
   };
+  /**
+   * Some params for modal. Modal is still very WIP.
+   * What is right lvl of abstraction.
+   */
+  const modalId = "addApplicationModal";
+  const textContent = "Give name for new Application";
 
   return (
     <div>
-      <Header />
+      <Header heading={"Experiment-Server-UI"} />
 
         <div className="ApplicationHeader">
           <h3>Applications</h3>
-          <button className="addApplicationButton">+</button>
+          <button className="addApplicationButton" onClick={()=>{openModal(modalId)}}> +</button>
+          <ModalClass
+            modalId={modalId}
+            textContent={textContent}
+            input={1}
+            onSubmit={handleSubmit.bind(this)} />
+
         </div>
         <div className="Applications">
         {this.props.apps.map((entry,i) =>
-          <Application
+          <ApplicationSmallBox
                key={entry.get("id")}
                id={entry.get("id")}
                name={entry.get("name")}
@@ -53,11 +64,6 @@ render(){
   )
   }
 }
-/**
- * <form className="addApplication" onSubmit={handleSubmit}>
- <input ref="applicationName" type="text"></input><button className="right" type="submit">Create new Application </button>
- </form>
- */
 
 /**
  * Redux functions for Applications Class.
@@ -72,7 +78,9 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-
+/**
+ * If state is undefined return loading.
+ */
 function mapStateToProps(state) {
     return { apps: (state.get('apps') ? state.get('apps')  : fromJS([{id:100, name:"Loading"}]) ) }
 }

@@ -5,11 +5,10 @@ import React from 'react'
  * TODO Innovate better name for class. :P
  */
 
-export const Header = () =>{
+export const Header = ({heading}) =>{
   return(
     <header className="headerBox">
-      <h3>Experiment-Server-UI</h3>
-
+      <h3>{heading}</h3>
       </header>
   )
 }
