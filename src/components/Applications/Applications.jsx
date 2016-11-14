@@ -26,8 +26,12 @@ export const ApplicationSmallBox = ({ name, id, onDeleteClick }) => {
 
 export class ApplicationsBase extends Component {
 
+componentWillMount(){
+  this.props.onPageLoad();
+}
+
 render(){
-  const handleSubmit = value => {
+  const handleSubmit = ( value )  => {
     this.props.onClick(value);
   };
   /**
@@ -39,7 +43,6 @@ render(){
 
   return (
     <div>
-      <Header heading={"Experiment-Server-UI"} />
 
         <div className="ApplicationHeader">
           <h3>Applications</h3>
@@ -73,6 +76,9 @@ const mapDispatchToProps = (dispatch) => {
     onClick: (name) => {
       dispatch(postApplication(name))
     },
+    onPageLoad: () =>{
+      dispatch(getApplications())
+    },
     onDeleteClick: (id) => {
       dispatch(deleteApplication(id))
     }
@@ -82,7 +88,7 @@ const mapDispatchToProps = (dispatch) => {
  * If state is undefined return loading.
  */
 function mapStateToProps(state) {
-    return { apps: (state.get('apps') ? state.get('apps')  : fromJS([{id:100, name:"Loading"}]) ) }
+    return { apps: (state.get('applications').get('apps') ? state.get('applications').get('apps')  : fromJS([{id:100, name:"Loading"}]) ) };
 }
 
 export const Applications = connect(mapStateToProps, mapDispatchToProps)(ApplicationsBase);
