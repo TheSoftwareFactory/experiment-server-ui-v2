@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 
 
 
@@ -18,12 +18,17 @@ export class ModalClass extends Component{
     close(this.props.modalId);
   }
 
+
+  /**
+   * Please do not use <form> redux-router does not work then and causes page to reload.
+   * And for some reason prevenDefault does not work also.
+   */
   onInputField(){
     return(
-      <form onSubmit={() =>this.onSubmitClick()}>
+      <div>
         <input type="text" ref="inputValue"></input>
-        <button type="submit">Send</button>
-      </form>
+        <button onClick={() =>this.onSubmitClick()} type="submit">Send</button>
+        </div>
     )
   }
 

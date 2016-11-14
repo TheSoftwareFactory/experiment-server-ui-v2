@@ -1,10 +1,16 @@
-import React, {Component} from 'react';
-//Tääkin vois varmaan olla HOC
+import React, { Component } from 'react';
+import { Header } from './generals/Generals.jsx'
+
 /**
- * Currenly our "base" class for React routing, only pass props forward atm.
+ * Currenly our "base" class for React routing.
+ * Maybe change to HOC
  */
 export default class App extends Component{
   render(){
-    return (this.props.children)
-  }
+    return (
+      <div>
+        <Header heading={"Experiment-Server-UI"} />
+        {this.props.children}
+      </div>
+    )};
 }
