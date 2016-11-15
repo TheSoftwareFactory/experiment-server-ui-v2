@@ -7,7 +7,6 @@ import { Header } from './generals/Generals.jsx'
  */
 export default class App extends Component{
   render(){
-    console.log(this.props.children.props.route);
     return (
       <div>
         <Header heading={"Experiment-Server-UI"} />
