@@ -67,4 +67,17 @@ describe('Saga', () => {
       put(ac.removeApplication(action.id))
     );
   })
+  it('works when getting Data for app ', () => {
+    const action = {id: 2}
+    const generator = saga.getAppData(action);
+    assert.deepEqual(
+      generator.next().value,
+      call(request.get, (BASE_URL + 'applications/' + action.id + '/data') )
+    )
+    const appData = {id: 24, rangeconstraints: [], configurationkeys: [], name: "UusiJuttu"}
+    assert.deepEqual(
+      generator.next({"data" : appData}).value,
+      put(ac.setApplicationData(appData))
+    )
+  })
 });
