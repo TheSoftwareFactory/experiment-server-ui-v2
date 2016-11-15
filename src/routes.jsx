@@ -9,7 +9,6 @@ import App from './components/App.jsx'
  * Front-end routes are listed here. Base component App.
  */
 
-
 export default () =>{
   return(
     <Route path="/" component={App}>

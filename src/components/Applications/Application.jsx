@@ -27,8 +27,6 @@ export class ApplicationBase extends Component {
     var testDate = Date.now();
     return(
       <div>
-        <Header />
-
         <div className="ApplicationHeader">
           <h3>Applikaation otsikkos</h3>
         </div>
@@ -60,15 +58,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-  let joku = { apps: (state.get('apps') ? state.get('apps')  : fromJS([{id:100, name:"Loading"}]) ) }
-
-  try {
-      console.log(joku.apps.toList()[2]);
-  } catch (e) {
-
-  } finally {
-
-  }
   return { apps: (state.get('apps') ? state.get('apps')  : fromJS([{id:100, name:"Loading"}]) ) }
 }
 
