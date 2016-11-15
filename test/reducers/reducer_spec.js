@@ -1,6 +1,8 @@
-import reducer from '../../src/reducers/reducer.js';
 import { fromJS } from 'immutable'
 import { expect } from 'chai';
+
+import reducer from '../../src/reducers/reducer.js';
+
 describe('Reducer', () => {
   it('should add application to state', () => {
     const state = fromJS(

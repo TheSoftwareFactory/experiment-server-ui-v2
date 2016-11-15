@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header } from "../generals/Generals.jsx";
 import { fromJS } from 'immutable';
-import { getApplicationData } from '../../action_creators';
+
+import { getApplicationData } from '../../actions/action_creators';
+import { Header } from "../generals/Generals.jsx";
 
 export const Experiments = ({ name, id, starts, ends}) => {
 

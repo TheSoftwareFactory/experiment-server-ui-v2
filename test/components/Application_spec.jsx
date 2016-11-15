@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { renderIntoDocument, scryRenderedDOMComponentsWithTag } from 'react-addons-test-utils';
-import { ApplicationsBase } from '../../src/components/Applications/Applications.jsx';
 import { expect } from 'chai';
 import { fromJS } from 'immutable'
+
+import { ApplicationsBase } from '../../src/components/Applications/Applications.jsx';
 
 describe('Applications', () => {
   //this does not work, please fix, somehow to work.
@@ -12,7 +13,7 @@ describe('Applications', () => {
     /*
     No component testing at the moment
     //TODO it plz.
-    
+
     const component = renderIntoDocument(<ApplicationsBase apps={parasm} />)
 
     const buttons = scryRenderedDOMComponentsWithTag(component, 'button');

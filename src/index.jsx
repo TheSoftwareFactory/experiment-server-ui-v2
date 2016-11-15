@@ -3,7 +3,7 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
-import { rootSaga } from './sagas.js';
+import { rootSaga } from './sagas/sagas.js';
 import getRoutes from './routes.jsx'
 import { sagaMiddleware, store, history } from './helpers/initHelper.js'
 

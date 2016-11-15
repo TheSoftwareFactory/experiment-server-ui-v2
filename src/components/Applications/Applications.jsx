@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { getApplications, postApplication,deleteApplication } from '../../action_creators.js'
 import { connect } from 'react-redux';
-import { Header } from "../generals/Generals.jsx";
-import { ModalClass, openModal } from "../generals/Modals.jsx";
 import { fromJS } from 'immutable';
 import { Link } from 'react-router'
+
+import { getApplications, postApplication,deleteApplication } from '../../actions/action_creators.js'
+import { Header } from "../generals/Generals.jsx";
+import { ModalClass, openModal } from "../generals/Modals.jsx";
 
 
 /**

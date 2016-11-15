@@ -1,8 +1,10 @@
 import { takeEvery, takeLatest } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
-import * as ac from './action_creators.js'
 import request from 'axios'
 import {fromJS} from 'immutable'
+
+import * as ac from '../actions/action_creators.js'
+
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
 
 /**
