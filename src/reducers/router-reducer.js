@@ -21,16 +21,9 @@ const initialState = Immutable.fromJS({
  * react-router-redux does not like that kind of behavior when using hashHistory.
  * Nothing to worry about just #javascriptLifeStyle
  */
-export default (state=initialState, action) => {
-  try {
-    if (action.type === LOCATION_CHANGE) {
-        return state.merge({
-            locationBeforeTransitions: action.payload
-        });
-    }
-  } catch (e) {
-
-  } finally {
-    return state;
-  }
-};
+ export default (state = initialState, action) => {
+   if (action.type === LOCATION_CHANGE) {
+     return state.set('locationBeforeTransitions', action.payload);
+   }
+   return state;
+ };

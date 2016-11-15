@@ -27,7 +27,7 @@ const store = createStore(
 
 
 const history = syncHistoryWithStore(hashHistory, store, {
-   selectLocationState: (state) =>{
+   selectLocationState (state) {
      return state.get('routing').toJS()
    }
  });

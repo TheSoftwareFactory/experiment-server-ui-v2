@@ -3,7 +3,7 @@ import {
   renderIntoDocument,
   scryRenderedDOMComponentsWithTag
 } from 'react-addons-test-utils';
-import reducer from './../src/reducer.js';
+import reducer from './../src/reducers/reducer.js';
 import {fromJS} from 'immutable'
 import {expect} from 'chai';
 describe('Reducer', () => {

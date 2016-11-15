@@ -13,8 +13,9 @@ export default () =>{
   return(
     <Route path="/" component={App}>
       <IndexRoute component={Applications}/>
-      <Route path="/applications"  component={Applications}/>
-      <Route path="/:id" component={Application} />
+      <Route path="applications"  component={Applications}>
+      </Route>
+      <Route path="applications/:id" component={Application} />
       <Route path="/users" component={Users} />
    </Route>
   )

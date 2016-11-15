@@ -20,7 +20,8 @@ export const Experiments = ({ name, id, starts, ends}) => {
 
 export class ApplicationBase extends Component {
   componentWillMount() {
-    this.props.onLoad(1);
+    let id  = this.props.location.pathname.replace( /^\D+/g, ''); //strip anything but numbers
+    this.props.onLoad(id);
   }
 
   render() {
@@ -43,6 +44,7 @@ export class ApplicationBase extends Component {
             ends={testDate}
             clientCount={42} />
         </div>
+
       </div>
     )
   }
@@ -51,14 +53,21 @@ export class ApplicationBase extends Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     onLoad: (id) => {
-      console.log("heips");
       dispatch(getApplicationData(id))
     }
   }
 }
 
+/**
+ * CONSIDER to refactor apps state to ordeder set and invent better algorithm.
+ */
 function mapStateToProps(state) {
-  return { apps: (state.get('apps') ? state.get('apps')  : fromJS([{id:100, name:"Loading"}]) ) }
+  if(!(state.get('applications').isEmpty())){
+    let apps = state.get('applications').get('apps');
+    return { application: (state.get('applications').get('apps')) }
+  } else {
+    return {apps: fromJS([{id:100, name:"Loading"}])}
+  }
 }
 
-export const Application = connect(mapStateToProps, mapDispatchToProps)(ApplicationBase);
+export const Application = connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(ApplicationBase);

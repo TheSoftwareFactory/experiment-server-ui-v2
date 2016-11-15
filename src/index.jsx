@@ -7,7 +7,7 @@ import { rootSaga } from './sagas.js';
 import getRoutes from './routes.jsx'
 import { sagaMiddleware, store, history } from './helpers/initHelper.js'
 
-//start Sagas. 
+//start Sagas.
 sagaMiddleware.run(rootSaga);
 
 /**

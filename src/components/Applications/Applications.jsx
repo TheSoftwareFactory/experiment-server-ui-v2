@@ -1,9 +1,10 @@
-import React, {Component} from 'react';
-import {getApplications, postApplication,deleteApplication} from '../../action_creators.js'
-import {connect} from 'react-redux';
-import {Header} from "../generals/Generals.jsx";
-import {ModalClass, openModal} from "../generals/Modals.jsx";
-import {fromJS} from 'immutable';
+import React, { Component } from 'react';
+import { getApplications, postApplication,deleteApplication } from '../../action_creators.js'
+import { connect } from 'react-redux';
+import { Header } from "../generals/Generals.jsx";
+import { ModalClass, openModal } from "../generals/Modals.jsx";
+import { fromJS } from 'immutable';
+import { Link } from 'react-router'
 
 
 /**
@@ -16,8 +17,7 @@ export const ApplicationSmallBox = ({ name, id, onDeleteClick }) => {
         <div className="ApplicationBox">
           <h4>{name}</h4>
           <p>
-          <button onClick={() => console.log("moi")}>Edit</button>
-          <button onClick={() => onDeleteClick(id)}>Delete</button>
+          <Link to={'/applications/' + id } activeClassName="active">Nappi</Link>
           </p>
         </div>
 
@@ -91,4 +91,4 @@ function mapStateToProps(state) {
     return { apps: (state.get('applications').get('apps') ? state.get('applications').get('apps')  : fromJS([{id:100, name:"Loading"}]) ) };
 }
 
-export const Applications = connect(mapStateToProps, mapDispatchToProps)(ApplicationsBase);
+export const Applications = connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(ApplicationsBase);

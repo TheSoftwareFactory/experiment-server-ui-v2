@@ -36,14 +36,17 @@ function removeApplication(state,removeId){
   return state.set('apps',splicedList); //set it to new state.
 }
 
+//TODO TEST THIS
+/**
+ * Checks if this is first app to put in state or
+ * if we are only updating data.
+ */
 function setApplicationData(state, data){
-  console.log(data,"data");
-  console.log(state.get('apps').toList(),"state");
-  let parsed = removeApplication(state, data.id)
-  console.log(parsed.get('apps').toList(),"parsed");
-  let uusi= addApplication(parsed, data)
-  console.log(uusi.get('apps').toList(),"uusi");
-  return uusi;
+  return state.isEmpty() ?
+          setState( state, {apps: data}) :
+          addApplication(
+              removeApplication(state, data.id),
+               data)
 }
 
 /**
