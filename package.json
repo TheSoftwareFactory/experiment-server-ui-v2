@@ -10,6 +10,7 @@
   "keywords": [
     "React",
     "Redux",
+    "ImmutableJS",
     "Redux-Saga",
     "Frontend"
   ],

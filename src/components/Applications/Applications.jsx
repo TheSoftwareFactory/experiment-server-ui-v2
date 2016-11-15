@@ -20,7 +20,6 @@ export const ApplicationSmallBox = ({ name, id, onDeleteClick }) => {
           <Link to={'/applications/' + id } activeClassName="active">Nappi</Link>
           </p>
         </div>
-
     </div>)
 }
 

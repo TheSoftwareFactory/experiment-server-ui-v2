@@ -12,7 +12,8 @@ sagaMiddleware.run(rootSaga);
 
 /**
  * Initial renders provides Redux-Provider and React-Router to whole project.
-   Please refer router for actual routes and components.
+ * Please refer router for actual routes and components.
+ * To find History and Store see initHelper file.
  */
 render(
   <Provider store={store}>
