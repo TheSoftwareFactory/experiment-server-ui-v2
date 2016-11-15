@@ -1,7 +1,8 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router';
 import Users from './components/Users.jsx'
-import { Applications } from './components/Applications/Applications.jsx'
+import {Applications} from './components/Applications/Applications.jsx'
+import {Application} from './components/Applications/Application.jsx'
 import App from './components/App.jsx'
 
 /**
@@ -13,6 +14,7 @@ export default () =>{
     <Route path="/" component={App}>
       <IndexRoute component={Applications}/>
       <Route path="/applications"  component={Applications}/>
+      <Route path="/:id" component={Application} />
       <Route path="/users" component={Users} />
    </Route>
   )

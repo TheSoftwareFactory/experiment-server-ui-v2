@@ -13,4 +13,4 @@ export default class App extends Component{
         {this.props.children}
       </div>
     )};
-}
+  }
