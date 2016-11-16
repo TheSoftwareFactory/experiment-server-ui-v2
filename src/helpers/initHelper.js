@@ -24,12 +24,11 @@ const store = createStore(
      applyMiddleware(sagaMiddleware)
    );
 
-
-
 const history = syncHistoryWithStore(hashHistory, store, {
-   selectLocationState: (state) =>{
+   selectLocationState (state) {
      return state.get('routing').toJS()
    }
  });
 
+//Then export them to index.js
  export{ sagaMiddleware, store, history }

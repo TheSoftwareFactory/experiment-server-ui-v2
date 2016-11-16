@@ -1,8 +1,9 @@
 import { call, put, take } from 'redux-saga/effects'
-import * as saga from './../src/sagas.js'
-import * as ac from './../src/action_creators.js'
 import request from 'axios'
 import {assert} from 'chai'
+
+import * as saga from '../../src/sagas/sagas.js'
+import * as ac from '../../src/actions/action_creators.js'
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
 /**
  * TODO Maybe add more errortests and separate logic to other files
@@ -65,5 +66,18 @@ describe('Saga', () => {
       generator.next().value,
       put(ac.removeApplication(action.id))
     );
+  })
+  it('works when getting Data for app ', () => {
+    const action = {id: 2}
+    const generator = saga.getAppData(action);
+    assert.deepEqual(
+      generator.next().value,
+      call(request.get, (BASE_URL + 'applications/' + action.id + '/data') )
+    )
+    const appData = {id: 24, rangeconstraints: [], configurationkeys: [], name: "UusiJuttu"}
+    assert.deepEqual(
+      generator.next({"data" : appData}).value,
+      put(ac.setApplicationData(appData))
+    )
   })
 });

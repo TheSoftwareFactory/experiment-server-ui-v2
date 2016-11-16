@@ -1,9 +1,13 @@
-import {Map,fromJS} from 'immutable';
-
+import { Map,fromJS } from 'immutable';
 //TODO Update state so that Applications are behind user.
 //Do this after backend change
 
-
+/**
+ * Some helper functions.
+ */
+function findIndexById (state, id ){
+  return state.get('apps').findIndex(map =>{ return map.get("id") === id; });
+}
 /**
  * Creates New State from given state.
  */
@@ -29,22 +33,28 @@ function addApplication(state, entry){
  * You totally could do this with oneliner also.
  */
 function removeApplication(state,removeId){
-  //Okey this NOT  the optimal way to do it. Fix if inconvinent.
-  let listOfApps = state.get('apps') //get apps List from state
-  let indexByRemoveID = listOfApps.findIndex(map =>{ return map.get("id") === removeId; }); //find index by ID
-  let splicedList = listOfApps.delete(indexByRemoveID) // crate new list without removed entry.
-  return state.set('apps',splicedList); //set it to new state.
-}
 
-function setApplicationData(state, data){
-  console.log(data,"data");
-  console.log(state.get('apps').toList(),"state");
-  let parsed = removeApplication(state, data.id)
-  console.log(parsed.get('apps').toList(),"parsed");
-  let uusi= addApplication(parsed, data)
-  console.log(uusi.get('apps').toList(),"uusi");
-  return uusi;
+  let index = findIndexById(state,removeId)
+  return state.set(
+        'apps'
+        ,state.get('apps').delete(index)
+      );
 }
+/**
+ * Checks if this is first app to put in state or
+ * if we are only updating data.
+ */
+ function setApplicationData(state, data){
+   let immutableData = fromJS(data);
+   if (state.isEmpty()) {
+       return setState(state,{apps: immutableData})
+   }
+   let index = findIndexById(state,immutableData.get('id'));
+   if(index !== -1){
+     state = state.set('apps',state.get('apps').delete(index));
+   }
+   return addApplication(state, immutableData);
+ }
 
 /**
  * Reducer to listen state modifing action creators.

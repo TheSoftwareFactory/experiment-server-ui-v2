@@ -1,5 +1,5 @@
 /*
-* There are 2 kind of action_creators here.
+* There are two kind of action_creators here.
 * Ones that are passed to Redux-Saga to do async stuff.
 * And ones that actually modify state.
 * Redux-Saga calls the latter allways after doing async calls
@@ -8,6 +8,8 @@
 * Plese note; there MIGHT be a smarter way to handle this but this is clean enough for me
 * - With love tixtixti.
 */
+
+//////////////////////////////////////////////
 
 /*
 * These are actual ASYNC action calls from UI components
