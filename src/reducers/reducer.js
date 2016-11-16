@@ -47,7 +47,7 @@ function removeApplication(state,removeId){
  function setApplicationData(state, data){
    let immutableData = fromJS(data);
    if (state.isEmpty()) {
-       return setState(state,{apps: immutableData})
+       return setState(state,{apps: [immutableData]})
    }
    let index = findIndexById(state,immutableData.get('id'));
    if(index !== -1){

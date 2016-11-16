@@ -47,7 +47,7 @@ describe('Reducer', () => {
     const action =
     {
       type: 'SET_APPLICATION_DATA',
-      data: [{id: 24, rangeconstraints: [], configurationkeys: [], name: "UusiJuttu"}]
+      data: {id: 24, rangeconstraints: [], configurationkeys: [], name: "UusiJuttu"}
     }
     const nextState = reducer(state, action);
     expect(nextState).to.equal(fromJS(
