@@ -1,11 +1,23 @@
-This is a new version of Expreriment-Server-Ui. Backend project can be found https://github.com/TheSoftwareFactory/experiment-server/.
+#  Experiment-server-ui-v2
 
-*dependencies*
+This is a new version of Expreriment-Server-Ui.
+Backend project can be found here  https://github.com/TheSoftwareFactory/experiment-server/.
+
+Old version of front-end can be found https://github.com/TheSoftwareFactory/experiment-server-ui/.
+
+
+#### dependencies
+```
   React
   Redux
   Redux-Saga
+  Redux-Immutable
+  React-Router
+  React-Redux-Router
   Babel
   Immutable
   Axios
+  Webpack
+  ```
 
-To run use npm install and webpack-dev-server. 
+To start first run  ```npm install``` and then ```webpack-dev-server```.
