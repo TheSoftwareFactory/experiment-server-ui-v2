@@ -34,9 +34,7 @@ export class ApplicationBase extends Component {
           <h3>{thisApp.name}</h3>
         </div>
 
-        <div className="SubHeader">
           <h3>Overview</h3>
-        </div>
 
         <div className="Applications">
           <div>
@@ -46,62 +44,70 @@ export class ApplicationBase extends Component {
                 {key.name} : {key.type}
               </div>)
             })}
+            <p>
+              UUID: AHSD-123H-12HS-123F-ASDJ
+            </p>
           </div>
         </div>
+        <div>
+          <h3>Exclusion Constrains</h3>
+          <div className="Applications">
 
-          <h3>Configuration Keys</h3>
+          </div>
+        </div>
+        <h3>Configuration Keys</h3>
+
         <div className="Applications">
           <div>
             <h4>Configuration Keys</h4>
-            {thisApp.configurationkeys.map(key =>{
-              return(<div key={key.id}>
-                {key.name} : {key.type}
-                <Modal
-                  modalId={"deleteConfigKey" + key.name}
-                  content={
-                    <div>
-                    "Are you sure you want to delete "  {key.name}
-                    <button onClick={()=> {this.props.onConfigDeleteClick(thisApp.id, key.id); closeModal("deleteConfigKey" + key.name)}  }>
-                        Delete Configuration Key
-                      </button>
-                  </div> }
+              {thisApp.configurationkeys.map(key =>{
+                return(<div key={key.id}>
+                  {key.name} : {key.type}
+                  <Modal
+                    modalId={"deleteConfigKey" + key.name}
+                    content={
+                      <div>
+                      "Are you sure you want to delete "  {key.name}
+                      <button onClick={()=> {this.props.onConfigDeleteClick(thisApp.id, key.id); closeModal("deleteConfigKey" + key.name)}  }>
+                          Delete Configuration Key
+                        </button>
+                    </div> }
                 />
               <button onClick={() => openModal("deleteConfigKey" + key.name)}>Delete </button>
-              </div>)
-            })}
-
-
-            <Modal
-                modalId={"addConfigKey"}
-                content={<div>
-                  Add new Configuration Key
-                  <input type="text" ref="name"></input>
-                  <select ref="type">
-                    <option value="boolean">Volvo</option>
-                    <option value="string">Sab</option>
-                    <option value="Integer">Mercedes</option>
-                    <option value="Float">Audi</option>
-                  </select>
-                  <button onClick={()=>{
-                                  this.props.onConfigAddClick(thisApp.id, this.refs.name.value,this.refs.type.value );
-                                  closeModal("addConfigKey")} }>
-                  Add Configuration Key
-                </button>
-              </div>}
-              />
-              <button onClick={()=>openModal("addConfigKey")}>add new one </button>
+              </div>
+            )}
+          )};
+          <div>
+            <p>
+              <input type="text" ref="name"></input>
+              <select ref="type">
+                <option value="boolean">Volvo</option>
+                <option value="string">Sab</option>
+                <option value="Integer">Mercedes</option>
+                <option value="Float">Audi</option>
+              </select>
+              <button onClick={()=>{
+                              this.props.onConfigAddClick(thisApp.id, this.refs.name.value,this.refs.type.value );
+                              this.refs.name.value = ""} }>
+              Add Configuration Key
+              </button>
+            </p>
           </div>
+          <p>
+            <button onClick={()=>openModal("addConfigKey")}>add new one </button>
+          </p>
         </div>
-        <h3>Danger Zone</h3>
+      </div>
+
+      <h3>Danger Zone</h3>
       <div className="Applications">
         <div>
           <h4>Delete this Application</h4>
-            <Modal
-              modalId="deleteApplication"
-              content={
-                <div>
+          <Modal
+            modalId="deleteApplication"
+            content={
+              <div>
                 Are you sure you want to delete  {thisApp.name}
-
                 <button onClick={()=>
                     {
                       this.props.onDeleteClick(thisApp.id);
@@ -110,13 +116,12 @@ export class ApplicationBase extends Component {
                   }>
                   Delete Appliation
                 </button>
-                </div>
-              } />
-            <button onClick={() => openModal("deleteApplication")}>Delete this app </button>
+              </div>}
+           />
+          <button onClick={() => openModal("deleteApplication")}>Delete this app </button>
         </div>
       </div>
-
-      </div>
+    </div>
     )
   }
 }
@@ -134,8 +139,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch(ac.deleteConfigKey({appId: appId, keyId: configKeyId}))
     },
     onConfigAddClick: (appId, name, type) => {
-      console.log({appId: appId, payload: {name:name, type:type }});
-      //dispatch(ac.postConfigKey({appId: appId, keyId: configKeyId, payload: {name:name, type:type }}))
+      dispatch(ac.postConfigKey({appId: appId, payload: {name:name, type:type }}))
     }
   }
 }
@@ -144,6 +148,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  * CONSIDER to refactor apps state to ordeder set and invent better algorithm.
  */
 function mapStateToProps(state, ownProps) {
+  //console.log(state.get('operations').toJS(),"ready to go");
   if((state.get('applications').get('apps'))){
     return { apps: (state.get('applications').get('apps')) }
   } else {
