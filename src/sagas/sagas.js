@@ -46,7 +46,7 @@ export function* postApp(action){
 
 export function* deleteApp(action){
   try{
-    const data = yield call( request.delete, (BASE_URL + 'applications/' + action.id),  );
+    yield call( request.delete, (BASE_URL + 'applications/' + action.id),  );
     yield put( ac.removeApplication(action.id) );
   } catch(err){
     console.log(err);
@@ -61,12 +61,33 @@ export function* getAppData(action){
     console.log(err)
   }
 }
+export function* delConfig(action){
+  try{
+    yield call( request.delete, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/' + action.data.keyId ),  );
+    yield put( ac.getApplicationData(action.data.appId) );
+  } catch(err){
+    console.log(err);
+  }
+}
+export function* addConfig(action){
+  try{
+    yield call( request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/'),
+              { name: action.data.payload.name, type: action.data.payload.type }  );
+    yield put( ac.getApplicationData(action.data.appId) ); //TODO check actual return and maybe use that.
+  } catch(err){
+    console.log(err);
+  }
+}
 /**
  * Since you have to tell saga how you want your actions handled
  * there needs to some listerner methods.
  * takeEvery means saga creates buffer and listens every one incoming actions
  * and handles them one by one.
  */
+
+ function* deleteConfigKeySaga(){
+     yield* takeEvery("DELETE_CONFIGURATION_KEY", delConfig);
+ }
 function* getApplicationsSaga(){
     yield* takeEvery("GET_APPLICATIONS", getApps);
 }
@@ -80,12 +101,18 @@ function* deleteApplicationSaga(){
 function* getApplicationDataSaga(){
   yield* takeEvery("GET_APPLICATION_DATA", getAppData)
 }
+function* postConfigKeySaga(){
+  yield* takeEvery("POST_CONFIGURATION_KEY", addConfig)
+}
 
 /**
  * And rootSaga to implement all Sagas to store.
  */
 
 export function* rootSaga() {
-    yield[getApplicationDataSaga(),getApplicationsSaga(),postSaga(),deleteApplicationSaga()]
+    yield[
+        getApplicationDataSaga(),getApplicationsSaga(),postSaga(),
+        deleteApplicationSaga(), deleteConfigKeySaga(),postConfigKeySaga()
+         ]
 
 }

@@ -39,6 +39,18 @@ export function getApplicationData(id) {
     id
   };
 }
+export function deleteConfigKey(data) {
+  return {
+    type: 'DELETE_CONFIGURATION_KEY',
+    data
+  };
+}
+export function postConfigKey(data) {
+  return {
+    type: 'POST_CONFIGURATION_KEY',
+    data
+  };
+}
 
 /*
 * Following are actions creators for reducer to handle state.
