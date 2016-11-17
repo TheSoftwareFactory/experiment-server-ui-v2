@@ -2,19 +2,19 @@ import React, { Component, PropTypes } from 'react';
 
 
 
-export const openModal = modalId =>{
+export const openModal = modalId => {
     document.getElementById(modalId).style.display = "block"
 }
 
-const close = (modalId) =>{
+const close = modalId => {
   document.getElementById(modalId).style.display = "none"
 }
 
 export class ModalClass extends Component{
 
   onSubmitClick(){
-    this.props.onSubmit(this.refs.inputValue.value);
-    this.refs.inputValue.value = "";
+    this.props.onSubmit();
+
     close(this.props.modalId);
   }
 
@@ -23,13 +23,42 @@ export class ModalClass extends Component{
    * Please do not use <form> redux-router does not work then and causes page to reload.
    * And for some reason prevenDefault does not work also.
    */
-  onInputField(){
-    return(
-      <div>
-        <input type="text" ref="inputValue"></input>
-        <button onClick={() =>this.onSubmitClick()} type="submit">Send</button>
-        </div>
-    )
+   /**
+    * This is a bit of hax, when you give table of JSobjects where are text and action pairs
+    * this will create button for each with corresponding action.
+    * By default after each button click modal will close.
+    * Maybe refactor to be more pleasant to use.
+    * Own function for easier readability and easier to remove when realising this is
+    * a dump gimick.
+    */
+    inputButtonsActionHelper(ref, action, modalId){
+      if(ref){
+        action( this.refs[ref].value );
+        this.refs[ref].value = "";
+      } else {
+        action()
+      }
+      close(modalId)
+    }
+
+  inputButtons(namesAndActions,modalId){
+    return namesAndActions.map(pair=>{
+      if( !(pair.ref)) pair.ref ="";
+      return (
+        <button
+          key={pair.text}
+          onClick={ () =>
+             { this.inputButtonsActionHelper(pair.ref,pair.action,modalId)}
+           }>
+          {pair.text}
+        </button>)
+    })
+   }
+
+  inputFields(inputs){
+    return inputs.map(input=>{
+        return <input key={input.ref} type="text" ref={input.ref}></input>
+    })
   }
 
   render(){
@@ -38,8 +67,12 @@ export class ModalClass extends Component{
         <div className="modal-content">
           <button onClick={() => close(this.props.modalId)} className="close">x</button>
           {this.props.textContent}
-          {this.props.input ? this.onInputField() : []}
-        </div>
+          {this.props.inputs ? this.inputFields(this.props.inputs) : []}
+          {this.props.buttons ? this.inputButtons(this.props.buttons, this.props.modalId) : []}
+          <p>
+            <button onClick={()=>close(this.props.modalId)}>Close</button>
+          </p>
+      </div>
         </div>
     )
   }

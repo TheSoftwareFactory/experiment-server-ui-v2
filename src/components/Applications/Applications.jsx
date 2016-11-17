@@ -50,8 +50,9 @@ render(){
           <ModalClass
             modalId={modalId}
             textContent={textContent}
-            input={1}
-            onSubmit={handleSubmit.bind(this)} />
+            inputs={ [ {ref:"ApplicationName"} ] }
+            buttons={ [ { text: "Add new App",ref:"ApplicationName", action: (value)=>this.props.onClick(value)} ] }
+             />
 
         </div>
         <div className="Applications">
@@ -78,9 +79,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     onPageLoad: () =>{
       dispatch(getApplications())
-    },
-    onDeleteClick: (id) => {
-      dispatch(deleteApplication(id))
     }
   }
 }
