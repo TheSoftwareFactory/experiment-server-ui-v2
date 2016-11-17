@@ -105,4 +105,17 @@ describe('Saga', () => {
       put(ac.getApplicationData(action.data.appId ))
     )
   });
+  it("Should get operations", ()=>{
+    const generator = saga.getOperations();
+    assert.deepEqual(
+      generator.next().value,
+      call(request.get, (BASE_URL + 'operators'))
+    )
+    const ops = [{id: 1, human_value:"equals", math_value:"="}];
+    assert.deepEqual(
+      generator.next({'data': ops}).value,
+      put(ac.setOperators(ops))
+    )
+
+  })
 });

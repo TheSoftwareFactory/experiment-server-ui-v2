@@ -78,6 +78,14 @@ export function* addConfig(action){
     console.log(err);
   }
 }
+export function* getOperations(){
+  try {
+    const data = yield call(request.get, (BASE_URL + 'operators'))
+    yield put(ac.setOperators(data.data))
+  } catch (e) {
+    console.log(e);
+  }
+}
 /**
  * Since you have to tell saga how you want your actions handled
  * there needs to some listerner methods.
@@ -104,6 +112,9 @@ function* getApplicationDataSaga(){
 function* postConfigKeySaga(){
   yield* takeEvery("POST_CONFIGURATION_KEY", addConfig)
 }
+function* getOperationsSaga(){
+  yield* takeEvery("GET_OPERATIONS", getOperations)
+}
 
 /**
  * And rootSaga to implement all Sagas to store.
@@ -112,7 +123,7 @@ function* postConfigKeySaga(){
 export function* rootSaga() {
     yield[
         getApplicationDataSaga(),getApplicationsSaga(),postSaga(),
-        deleteApplicationSaga(), deleteConfigKeySaga(),postConfigKeySaga()
-         ]
+        deleteApplicationSaga(), deleteConfigKeySaga(),postConfigKeySaga(),
+        getOperationsSaga(),]
 
 }

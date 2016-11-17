@@ -51,6 +51,11 @@ export function postConfigKey(data) {
     data
   };
 }
+export function getOperations() {
+  return {
+    type: 'GET_OPERATIONS'
+  };
+}
 
 /*
 * Following are actions creators for reducer to handle state.
@@ -79,5 +84,11 @@ export function setApplicationData(data) {
   return {
     type: 'SET_APPLICATION_DATA',
     data
+  };
+}
+export function setOperators(operators) {
+  return {
+    type: 'SET_OPERATORS',
+    operators
   };
 }

@@ -3,6 +3,7 @@ import { combineReducers } from 'redux-immutable';
 import { createStore, applyMiddleware } from 'redux';
 import reducer from '../reducers/reducer.js';
 import routerReducer  from '../reducers/router-reducer.js';
+import operationReducer from '../reducers/operationReducer.js'
 import createSagaMiddleware from 'redux-saga';
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Map } from 'immutable'
@@ -14,7 +15,8 @@ const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
     applications: reducer,
-    routing: routerReducer
+    routing: routerReducer,
+    operations: operationReducer
 })
 const initialState = Map();
 
