@@ -79,5 +79,43 @@ describe('Saga', () => {
       generator.next({"data" : appData}).value,
       put(ac.setApplicationData(appData))
     )
+  });
+  it('works deleting configuration key ', () => {
+    const action = {data: { appId: 1, keyId : 3 } };
+    const generator = saga.delConfig(action);
+    assert.deepEqual(
+      generator.next().value,
+      call(request.delete, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/' + action.data.keyId) )
+    );
+    assert.deepEqual(
+      generator.next().value,
+      put(ac.getApplicationData(action.data.appId ))
+    )
+  });
+  it('works adding configuration key ', () => {
+    const action = { data: { appId: 1, keyId : 3, payload: {name: "uusiAteena", type:"boolean"} } };
+    const generator = saga.addConfig(action);
+    assert.deepEqual(
+      generator.next().value,
+      call(request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/'),
+                        {name: action.data.payload.name, type: action.data.payload.type})
+    );
+      assert.deepEqual(
+      generator.next().value,
+      put(ac.getApplicationData(action.data.appId ))
+    )
+  });
+  it("Should get operations", ()=>{
+    const generator = saga.getOperations();
+    assert.deepEqual(
+      generator.next().value,
+      call(request.get, (BASE_URL + 'operators'))
+    )
+    const ops = [{id: 1, human_value:"equals", math_value:"="}];
+    assert.deepEqual(
+      generator.next({'data': ops}).value,
+      put(ac.setOperators(ops))
+    )
+
   })
 });

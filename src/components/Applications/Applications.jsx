@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 
 import { getApplications, postApplication,deleteApplication } from '../../actions/action_creators.js'
 import { Header } from "../generals/Generals.jsx";
-import { ModalClass, openModal } from "../generals/Modals.jsx";
+import { closeModal, Modal, openModal } from "../generals/Modal.jsx";
 
 
 /**
@@ -31,30 +31,27 @@ componentWillMount(){
 }
 
 render(){
-  const handleSubmit = ( value )  => {
-    this.props.onClick(value);
-  };
   /**
    * Some params for modal. Modal is still very WIP.
    * What is right lvl of abstraction.
    */
   const modalId = "addApplicationModal";
-  const textContent = "Give name for new Application";
 
   return (
-    <div>
-
+<div>
         <div className="ApplicationHeader">
           <h3>Applications</h3>
           <button className="addApplicationButton" onClick={()=>{openModal(modalId)}}> +</button>
-          <ModalClass
+          <Modal
             modalId={modalId}
-            textContent={textContent}
-            inputs={ [ {ref:"ApplicationName"} ] }
-            buttons={ [ { text: "Add new App",ref:"ApplicationName", action: (value)=>this.props.onClick(value)} ] }
-             />
-
-        </div>
+            content={
+              <div>
+              Give name for new Application
+              <input type="text" ref="appName"></input>
+              <button onClick={()=>{this.props.onClick(this.refs.appName.value); closeModal(modalId) }}>Add new Application</button>
+            </div>
+          }/>
+          </div>
         <div className="Applications">
         {this.props.apps.map((entry,i) =>
           <ApplicationSmallBox

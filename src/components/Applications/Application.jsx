@@ -1,30 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
-import { Router } from 'react-router'
-import { getApplicationData, deleteApplication } from '../../actions/action_creators';
+import * as ac from '../../actions/action_creators';
 import { Header } from "../generals/Generals.jsx";
-import { ModalClass, openModal } from "../generals/Modals.jsx";
-export const Experiments = ({ name, id, starts, ends}) => {
-
-  return (
-    <div className="Experiment" key={name}>
-
-      <h4>{name}</h4>
-      <p>
-        Test duration: {starts} - {ends}
-      </p>
-    </div>
-  )
-}
+import { Modal, openModal, closeModal } from "../generals/Modal.jsx";
 
 
 export class ApplicationBase extends Component {
 
   componentWillMount() {
-    let id  = this.props.location.pathname.replace( /^\D+/g, ''); //strip anything but numbers
-    this.props.onLoad(id);
+    this.props.onLoad();
   }
+
   notYetReadyRender(){
     return ( <div className="ApplicationHeader">
         <h3>Loading ... </h3>
@@ -47,9 +34,7 @@ export class ApplicationBase extends Component {
           <h3>{thisApp.name}</h3>
         </div>
 
-        <div className="SubHeader">
           <h3>Overview</h3>
-        </div>
 
         <div className="Applications">
           <div>
@@ -59,46 +44,102 @@ export class ApplicationBase extends Component {
                 {key.name} : {key.type}
               </div>)
             })}
+            <p>
+              UUID: AHSD-123H-12HS-123F-ASDJ
+            </p>
           </div>
         </div>
+        <div>
+          <h3>Exclusion Constrains</h3>
+          <div className="Applications">
 
-          <h3>Configuration Keys</h3>
+          </div>
+        </div>
+        <h3>Configuration Keys</h3>
+
         <div className="Applications">
           <div>
             <h4>Configuration Keys</h4>
-            {thisApp.configurationkeys.map(key =>{
-              return(<div key={key.id}>
-                {key.name} : {key.type} <button>delete</button>
-              </div>)
-            })}
-            <button>add new one </button>
+              {thisApp.configurationkeys.map(key =>{
+                return(<div key={key.id}>
+                  {key.name} : {key.type}
+                  <Modal
+                    modalId={"deleteConfigKey" + key.name}
+                    content={
+                      <div>
+                      "Are you sure you want to delete "  {key.name}
+                      <button onClick={()=> {this.props.onConfigDeleteClick(thisApp.id, key.id); closeModal("deleteConfigKey" + key.name)}  }>
+                          Delete Configuration Key
+                        </button>
+                    </div> }
+                />
+              <button onClick={() => openModal("deleteConfigKey" + key.name)}>Delete </button>
+              </div>
+            )}
+          )};
+          <div>
+            <p>
+              <input type="text" ref="name"></input>
+              <select ref="type">
+                <option value="boolean">Volvo</option>
+                <option value="string">Sab</option>
+                <option value="Integer">Mercedes</option>
+                <option value="Float">Audi</option>
+              </select>
+              <button onClick={()=>{
+                              this.props.onConfigAddClick(thisApp.id, this.refs.name.value,this.refs.type.value );
+                              this.refs.name.value = ""} }>
+              Add Configuration Key
+              </button>
+            </p>
           </div>
-        </div>
-        <h3>Danger Zone</h3>
-      <div className="Applications">
-        <div>
-          <h4>Delete this Application</h4>
-            <ModalClass
-              modalId="deleteApplication"
-              textContent={"Are you sure you want to delete " + thisApp.name }
-              buttons={ [ { text: "deleteFromUpper", action: ()=> this.props.onDeleteClick(thisApp.id) }]  }  />
-            <button onClick={() => openModal("deleteApplication")}>Delete this app </button>
+          <p>
+            <button onClick={()=>openModal("addConfigKey")}>add new one </button>
+          </p>
         </div>
       </div>
 
+      <h3>Danger Zone</h3>
+      <div className="Applications">
+        <div>
+          <h4>Delete this Application</h4>
+          <Modal
+            modalId="deleteApplication"
+            content={
+              <div>
+                Are you sure you want to delete  {thisApp.name}
+                <button onClick={()=>
+                    {
+                      this.props.onDeleteClick(thisApp.id);
+                      closeModal("deleteApplication");
+                    }
+                  }>
+                  Delete Appliation
+                </button>
+              </div>}
+           />
+          <button onClick={() => openModal("deleteApplication")}>Delete this app </button>
+        </div>
       </div>
+    </div>
     )
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onLoad: (id) => {
-      dispatch(getApplicationData(id))
+    onLoad: () => {
+      dispatch(ac.getApplicationData(ownProps.location.pathname.replace( /^\D+/g, '')))
     },
     onDeleteClick: (id) => {
       ownProps.router.push("/applications")
-      dispatch(deleteApplication(id));
+      dispatch(ac.deleteApplication(id));
+    },
+    onConfigDeleteClick: (appId, configKeyId) => {
+      dispatch(ac.deleteConfigKey({appId: appId, keyId: configKeyId}))
+    },
+    onConfigAddClick: (appId, name, type) => {
+      dispatch(ac.postConfigKey({appId: appId, payload: {name:name, type:type }}))
     }
   }
 }
@@ -106,8 +147,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 /**
  * CONSIDER to refactor apps state to ordeder set and invent better algorithm.
  */
-function mapStateToProps(state) {
-
+function mapStateToProps(state, ownProps) {
+  //console.log(state.get('operations').toJS(),"ready to go");
   if((state.get('applications').get('apps'))){
     return { apps: (state.get('applications').get('apps')) }
   } else {

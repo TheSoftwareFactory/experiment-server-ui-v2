@@ -39,6 +39,23 @@ export function getApplicationData(id) {
     id
   };
 }
+export function deleteConfigKey(data) {
+  return {
+    type: 'DELETE_CONFIGURATION_KEY',
+    data
+  };
+}
+export function postConfigKey(data) {
+  return {
+    type: 'POST_CONFIGURATION_KEY',
+    data
+  };
+}
+export function getOperations() {
+  return {
+    type: 'GET_OPERATIONS'
+  };
+}
 
 /*
 * Following are actions creators for reducer to handle state.
@@ -67,5 +84,11 @@ export function setApplicationData(data) {
   return {
     type: 'SET_APPLICATION_DATA',
     data
+  };
+}
+export function setOperators(operators) {
+  return {
+    type: 'SET_OPERATORS',
+    operators
   };
 }
