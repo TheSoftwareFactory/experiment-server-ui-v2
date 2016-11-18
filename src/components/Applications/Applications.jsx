@@ -83,7 +83,7 @@ const mapDispatchToProps = (dispatch) => {
  * If state is undefined return loading.
  */
 function mapStateToProps(state) {
-    return { apps: (state.get('applications').get('apps') ? state.get('applications').get('apps')  : fromJS([{id:100, name:"Loading"}]) ) };
+    return { apps: state.get('applications') ? state.get('applications')  : fromJS([{id:100, name:"Loading"}])  };
 }
 
 export const Applications = connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(ApplicationsBase);

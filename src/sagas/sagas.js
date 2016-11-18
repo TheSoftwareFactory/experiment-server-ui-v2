@@ -18,9 +18,9 @@ const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
 export function* getApps() {
   try {
     const data = yield call(request.get, (BASE_URL + 'applications') );
-    yield put(ac.setState( {apps: data.data} ));
+    yield put(ac.setState( data.data ));
   } catch (err) {
-    yield put(ac.setState({ apps:[]}));
+    put(ac.setState( [] ));
   }
 
 }

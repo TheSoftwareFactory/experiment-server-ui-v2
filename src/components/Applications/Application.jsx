@@ -149,8 +149,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  */
 function mapStateToProps(state, ownProps) {
   //console.log(state.get('operations').toJS(),"ready to go");
-  if((state.get('applications').get('apps'))){
-    return { apps: (state.get('applications').get('apps')) }
+  if(state.get('applications')){
+    return { apps: state.get('applications') }
   } else {
     return {apps: fromJS([{id:100, name:"Loading"}])}
   }
