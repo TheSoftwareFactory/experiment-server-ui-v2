@@ -1,12 +1,12 @@
 import { hashHistory } from 'react-router';
 import { combineReducers } from 'redux-immutable';
 import { createStore, applyMiddleware } from 'redux';
-import reducer from '../reducers/reducer.js';
+import ApplicationReducer from '../reducers/ApplicationReducer.js';
 import routerReducer  from '../reducers/router-reducer.js';
-import operationReducer from '../reducers/operationReducer.js'
+import operationReducer from '../reducers/operationReducer.js';
 import createSagaMiddleware from 'redux-saga';
 import { syncHistoryWithStore } from 'react-router-redux'
-import { Map } from 'immutable'
+import { Map } from 'immutable';
 
 /**
  * Init store, reducers, and history and Saga middleware
@@ -14,7 +14,7 @@ import { Map } from 'immutable'
 const sagaMiddleware = createSagaMiddleware();
 
 const rootReducer = combineReducers({
-    applications: reducer,
+    applications: ApplicationReducer,
     routing: routerReducer,
     operations: operationReducer
 })
