@@ -22,7 +22,7 @@ export class DangerZone extends Component{
                         closeModal("deleteApplication");
                       }
                     }>
-                    Delete Appliation
+                    Delete Application
                   </button>
                 </div>}
              />
