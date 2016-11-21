@@ -41,7 +41,7 @@ export class RangeConstraints extends Component{
               </select>
               <input type="text" ref="value" placeholder="value"></input>
               <p>
-              <button onClick={() => this.props.onRangeClick(this.refs.constkey.value, this.refs.operator.value, this.refs.value.value, this.props.app.id )}>Post Range </button>
+              <button onClick={() => this.props.onRangeClick(this.refs.constkey.value, this.refs.operator.value, this.refs.value.value, this.props.app.id )}>Post Range</button>
             </p></div>
         } />
     )
