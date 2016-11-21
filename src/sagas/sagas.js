@@ -36,7 +36,7 @@ export function* postApp(action){
     yield put( ac.addApplication(data.data) );
   } catch (err) {
     console.log(err);
-    yield put(ac.erroScreen(err))
+    yield put(ac.errorScreen(err))
   }
 }
 
@@ -71,8 +71,8 @@ export function* delConfig(action){
 }
 export function* addConfig(action){
   try{
-    yield call( request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/'),
-              { name: action.data.payload.name, type: action.data.payload.type }  );
+    yield call( request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys'),
+              { name: action.data.payload.name, type: action.data.payload.type, application_id:action.data.appId }  );
     yield put( ac.getApplicationData(action.data.appId) ); //TODO check actual return and maybe use that.
   } catch(err){
     console.log(err);
@@ -86,6 +86,28 @@ export function* getOperations(){
     console.log(e);
   }
 }
+export function* postRangeKey(action){
+  try{
+    yield call(request.post, (BASE_URL + "applications/"+ action.payload.appId+
+    "/configurationkeys/" + action.payload.constkey + "/rangeconstraints"),
+     {
+       configurationkey_id: action.payload.constkey,
+     operator_id: action.payload.operator,
+     value: action.payload.value} );
+    yield put(ac.getApplicationData(action.payload.appId))
+  } catch(e){
+    console.log(e);
+  }
+}
+export function* deleteRangeKey(action){
+  try{
+    yield call(request.delete, (BASE_URL + "applications/"+ action.payload.appId+
+    "/configurationkeys/" + action.payload.constkey + "/rangeconstraints/" + action.payload.rangeKey))
+    yield put(ac.getApplicationData(action.payload.appId))
+  } catch(e){
+    console.log(e);
+  }
+}
 /**
  * Since you have to tell saga how you want your actions handled
  * there needs to some listerner methods.
@@ -93,7 +115,7 @@ export function* getOperations(){
  * and handles them one by one.
  */
 
- function* deleteConfigKeySaga(){
+function* deleteConfigKeySaga(){
      yield* takeEvery("DELETE_CONFIGURATION_KEY", delConfig);
  }
 function* getApplicationsSaga(){
@@ -115,6 +137,12 @@ function* postConfigKeySaga(){
 function* getOperationsSaga(){
   yield* takeEvery("GET_OPERATIONS", getOperations)
 }
+function* postRangeKeySaga(){
+  yield* takeEvery("POST_RANGE", postRangeKey)
+}
+function* deleteRangeKeySaga(){
+  yield* takeEvery("DELETE_RANGE", deleteRangeKey)
+}
 
 /**
  * And rootSaga to implement all Sagas to store.
@@ -124,6 +152,6 @@ export function* rootSaga() {
     yield[
         getApplicationDataSaga(),getApplicationsSaga(),postSaga(),
         deleteApplicationSaga(), deleteConfigKeySaga(),postConfigKeySaga(),
-        getOperationsSaga(),]
+        getOperationsSaga(),postRangeKeySaga(),deleteRangeKeySaga()]
 
 }

@@ -56,6 +56,18 @@ export function getOperations() {
     type: 'GET_OPERATIONS'
   };
 }
+export function postRangeKey(payload){
+  return {
+    type: 'POST_RANGE',
+    payload
+  }
+}
+export function deleteRangeKey(payload){
+  return {
+    type: 'DELETE_RANGE',
+    payload
+  }
+}
 
 /*
 * Following are actions creators for reducer to handle state.

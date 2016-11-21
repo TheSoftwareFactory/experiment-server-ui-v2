@@ -18,20 +18,30 @@ export class ApplicationBase extends Component {
       </div> )
   }
 
+  findRightConfigurationKey(app, configKeyId){
+    return app.configurationkeys.filter(key=>{
+        if(key.id === configKeyId){
+          return key;
+        }
+    })[0]
+  }
   render() {
+    /*
+    console.log(this.props.app);
+    //TODO refactor this to mapStateToProps so in props there is only 1 app.
     const id  = this.props.location.pathname.replace( /^\D+/g, '');
     const index = this.props.apps.findIndex(map=>{ return map.get('id') === parseInt(id,10)  });
 
     if ( index === -1 ) return this.notYetReadyRender() //indicates we have not yet loaded app
 
-    const thisApp = this.props.apps.get(index).toJS(); //plainJS or immutableJS? If we only access it ?
-
-    if( !(thisApp.configurationkeys) ) return this.notYetReadyRender() //indicates we have not yet loaded app details
+    const this.props.app = this.props.apps.get(index).toJS(); //plainJS object of app we want to use.
+*/
+    if( !(this.props.app.configurationkeys) ) return this.notYetReadyRender() //indicates we have not yet loaded app details
 
     return(
       <div>
         <div className="ApplicationHeader">
-          <h3>{thisApp.name}</h3>
+          <h3>{this.props.app.name}</h3>
         </div>
 
           <h3>Overview</h3>
@@ -39,7 +49,7 @@ export class ApplicationBase extends Component {
         <div className="Applications">
           <div>
             <h4>Configuration Keys</h4>
-            {thisApp.configurationkeys.map(key =>{
+            {this.props.app.configurationkeys.map(key =>{
               return(<div key={key.id}>
                 {key.name} : {key.type}
               </div>)
@@ -50,17 +60,39 @@ export class ApplicationBase extends Component {
           </div>
         </div>
         <div>
-          <h3>Exclusion Constrains</h3>
+          <h3>Range Constrains</h3>
           <div className="Applications">
-
-          </div>
+            {this.props.app.rangeconstraints.map(rconst=>{
+              return (<div key={rconst.id}>
+                {this.findRightConfigurationKey(this.props.app,rconst.configurationkey_id).name}:
+              {this.props.operations[rconst.operator_id -1].human_value} :
+            {rconst.value}
+            <button onClick={() => this.props.onRangeDeleteClick(this.props.app.id,
+                rconst.configurationkey_id,
+                 rconst.id) }>Delete heres</button>
+           </div>)
+            })}
+            <select ref="constkey">
+              {this.props.app.configurationkeys.map(key=>{
+                return <option key={"key" + key.id} value={key.id}>{key.name}</option>
+              })}
+            </select>
+            <select ref="operator">
+              {this.props.operations.map(op=>{
+                return <option key={"op"+op.id} value={op.id}>{op.human_value}</option>
+              })}
+            </select>
+            <input type="text" ref="value" placeholder="value"></input>
+            <p>
+            <button onClick={() => this.props.onRangeClick(this.refs.constkey.value, this.refs.operator.value, this.refs.value.value, this.props.app.id )}>Post Range </button>
+          </p></div>
         </div>
         <h3>Configuration Keys</h3>
 
         <div className="Applications">
           <div>
             <h4>Configuration Keys</h4>
-              {thisApp.configurationkeys.map(key =>{
+              {this.props.app.configurationkeys.map(key =>{
                 return(<div key={key.id}>
                   {key.name} : {key.type}
                   <Modal
@@ -68,7 +100,7 @@ export class ApplicationBase extends Component {
                     content={
                       <div>
                       "Are you sure you want to delete "  {key.name}
-                      <button onClick={()=> {this.props.onConfigDeleteClick(thisApp.id, key.id); closeModal("deleteConfigKey" + key.name)}  }>
+                      <button onClick={()=> {this.props.onConfigDeleteClick(this.props.app.id, key.id); closeModal("deleteConfigKey" + key.name)}  }>
                           Delete Configuration Key
                         </button>
                     </div> }
@@ -87,15 +119,12 @@ export class ApplicationBase extends Component {
                 <option value="Float">Audi</option>
               </select>
               <button onClick={()=>{
-                              this.props.onConfigAddClick(thisApp.id, this.refs.name.value,this.refs.type.value );
+                              this.props.onConfigAddClick(this.props.app.id, this.refs.name.value,this.refs.type.value );
                               this.refs.name.value = ""} }>
               Add Configuration Key
               </button>
             </p>
           </div>
-          <p>
-            <button onClick={()=>openModal("addConfigKey")}>add new one </button>
-          </p>
         </div>
       </div>
 
@@ -107,10 +136,10 @@ export class ApplicationBase extends Component {
             modalId="deleteApplication"
             content={
               <div>
-                Are you sure you want to delete  {thisApp.name}
+                Are you sure you want to delete  {this.props.app.name}
                 <button onClick={()=>
                     {
-                      this.props.onDeleteClick(thisApp.id);
+                      this.props.onDeleteClick(this.props.app.id);
                       closeModal("deleteApplication");
                     }
                   }>
@@ -140,6 +169,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     onConfigAddClick: (appId, name, type) => {
       dispatch(ac.postConfigKey({appId: appId, payload: {name:name, type:type }}))
+    },
+    onRangeClick: (constkey, operator,value, appId) => {
+      dispatch(ac.postRangeKey({appId: appId, value: value, operator: parseInt(operator,10), constkey: parseInt(constkey,10)}))
+    },
+    onRangeDeleteClick: (appId, constkey, rangeKey) => {
+      console.log({appId: appId, constkey: constkey, rangeKey:rangeKey});
+      dispatch(ac.deleteRangeKey({appId: appId, constkey: constkey, rangeKey:rangeKey}))
     }
   }
 }
@@ -148,12 +184,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  * CONSIDER to refactor apps state to ordeder set and invent better algorithm.
  */
 function mapStateToProps(state, ownProps) {
-  //console.log(state.get('operations').toJS(),"ready to go");
-  if(state.get('applications')){
-    return { apps: state.get('applications') }
-  } else {
-    return {apps: fromJS([{id:100, name:"Loading"}])}
+  let allApps = state.get('applications')
+  if(allApps){
+    const index = allApps.findIndex(map=>{ return map.get('id') === parseInt(ownProps.params.id,10)  });
+    if ( index === -1 ) return {app: [{id:100, name:"Loading"}]} //indicates we have not yet loaded app
+    return {operations: state.get('operations').toJS(), app: allApps.get(index).toJS() }
+  }
+  else {
+    return {app: [{id:100, name:"Loading"}] }
   }
 }
 
-export const Application = connect(mapStateToProps, mapDispatchToProps, null, {pure:false})(ApplicationBase);
+export const Application = connect(mapStateToProps, mapDispatchToProps)(ApplicationBase);
