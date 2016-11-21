@@ -12,3 +12,16 @@ export const Header = ({heading}) =>{
       </header>
   )
 }
+export const SubHeader = ({heading}) =>{
+  return(
+    <div className="ApplicationHeader">
+      <h3>{heading}</h3>
+      </div>
+  )
+}
+export const DataBox = ({heading, content}) =>{
+  return(<div>
+    <h3>{heading}</h3>
+    <div className="Applications"> {content} </div>
+  </div>)
+}

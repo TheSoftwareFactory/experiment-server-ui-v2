@@ -44,7 +44,7 @@ describe('Saga', () => {
     );
   })
   */
-  it('works when posting', () => {
+  it('works when posting an App', () => {
     const action = {name: "testiAppi"};
     const generator = saga.postApp(action);
       assert.deepEqual(
@@ -99,15 +99,46 @@ describe('Saga', () => {
     const generator = saga.addConfig(action);
     assert.deepEqual(
       generator.next().value,
-      call(request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/'),
-                        {name: action.data.payload.name, type: action.data.payload.type})
+      call(request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys'),
+                        {application_id: action.data.appId, name: action.data.payload.name, type: action.data.payload.type})
     );
       assert.deepEqual(
       generator.next().value,
       put(ac.getApplicationData(action.data.appId ))
     )
   });
-  it("Should get operations", ()=>{
+  it("Should post RangeKey", ()=>{
+
+    const action = { payload: {appId: 1, constkey: 12, operator: 2, value: 12} }
+    const generator = saga.postRangeKey(action);
+    assert.deepEqual(
+      generator.next().value,
+      call(request.post, (BASE_URL + "applications/"+ action.payload.appId+
+      "/configurationkeys/" + action.payload.constkey + "/rangeconstraints"),
+       {
+      configurationkey_id: action.payload.constkey,
+       operator_id: action.payload.operator,
+       value: action.payload.value})
+    )
+    assert.deepEqual(
+      generator.next().value,
+      put(ac.getApplicationData(action.payload.appId))
+    )
+
+  });
+  it('works deleting rangeKey key ', () => {
+    const action = {payload: { appId: 1, constkey : 3, rangeKey:22 } };
+    const generator = saga.deleteRangeKey(action);
+    assert.deepEqual(
+      generator.next().value,
+      call(request.delete, (BASE_URL + "applications/"+ action.payload.appId+
+      "/configurationkeys/" + action.payload.constkey + "/rangeconstraints/" + action.payload.rangeKey))  );
+    assert.deepEqual(
+      generator.next().value,
+      put(ac.getApplicationData(action.payload.appId ))
+    )
+  });
+  it("Should get operators", ()=>{
     const generator = saga.getOperations();
     assert.deepEqual(
       generator.next().value,
