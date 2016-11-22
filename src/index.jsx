@@ -3,16 +3,18 @@ import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
 
+import { getExperimentsSaga } from './sagas/experimentSagas.js';
 import { rootSaga } from './sagas/sagas.js';
 import getRoutes from './routes.jsx'
 import { sagaMiddleware, store, history } from './helpers/initHelper.js'
 
 //start Sagas.
 sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(getExperimentsSaga)
 
 // To load unchangeable data to store.
  store.dispatch({type: 'GET_OPERATIONS'});
- 
+
 /**
  * Initial renders provides Redux-Provider and React-Router to whole project.
  * Please refer router for actual routes and components.

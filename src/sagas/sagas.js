@@ -1,11 +1,19 @@
 import { takeEvery, takeLatest } from 'redux-saga'
 import { call, put } from 'redux-saga/effects'
 import request from 'axios'
-import {fromJS} from 'immutable'
 
+//import { getExperimentsSaga } from './experimentSagas.js'
 import * as ac from '../actions/action_creators.js'
+import * as eac from '../actions/experiment_action_creators.js'
 
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
+const BASE_URL_APP = BASE_URL + "applications"
+const BASE_URL_APP_P = BASE_URL_APP + "/"
+/**
+ * TODO many of sagas simply call to getApplicationData after their job is done
+ * maybe it would be faster to recreate state in reducers.
+ */
+
 
 /**
  * Function to get all Applications from backend, uses Redux-Saga middleware
@@ -17,7 +25,7 @@ const BASE_URL = 'http://experiment-server2016.herokuapp.com/'
  */
 export function* getApps() {
   try {
-    const data = yield call(request.get, (BASE_URL + 'applications') );
+    const data = yield call(request.get, (BASE_URL_APP) );
     yield put(ac.setState( data.data ));
   } catch (err) {
     put(ac.setState( [] ));
@@ -32,7 +40,7 @@ export function* getApps() {
  */
 export function* postApp(action){
   try {
-    const data = yield call( request.post, (BASE_URL + 'applications'), { name: action.name } );
+    const data = yield call( request.post, (BASE_URL_APP), { name: action.name } );
     yield put( ac.addApplication(data.data) );
   } catch (err) {
     console.log(err);
@@ -46,7 +54,7 @@ export function* postApp(action){
 
 export function* deleteApp(action){
   try{
-    yield call( request.delete, (BASE_URL + 'applications/' + action.id),  );
+    yield call( request.delete, (BASE_URL_APP_P + action.id),  );
     yield put( ac.removeApplication(action.id) );
   } catch(err){
     console.log(err);
@@ -55,15 +63,18 @@ export function* deleteApp(action){
 
 export function* getAppData(action){
   try{
-    const data = yield call(request.get, (BASE_URL + 'applications/' + action.id + '/data') );
+    const data = yield call(request.get, (BASE_URL_APP_P  + action.id + '/data') );
     yield put( ac.setApplicationData(data.data) )
   } catch(err){
     console.log(err)
   }
 }
+/**
+ * configurationkeys
+ */
 export function* delConfig(action){
   try{
-    yield call( request.delete, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys/' + action.data.keyId ),  );
+    yield call( request.delete, (BASE_URL_APP_P + action.data.appId + '/configurationkeys/' + action.data.keyId ),  );
     yield put( ac.getApplicationData(action.data.appId) );
   } catch(err){
     console.log(err);
@@ -71,13 +82,25 @@ export function* delConfig(action){
 }
 export function* addConfig(action){
   try{
-    yield call( request.post, (BASE_URL + 'applications/' + action.data.appId + '/configurationkeys'),
+    yield call( request.post, (BASE_URL_APP_P + action.data.appId + '/configurationkeys'),
               { name: action.data.payload.name, type: action.data.payload.type, application_id:action.data.appId }  );
     yield put( ac.getApplicationData(action.data.appId) ); //TODO check actual return and maybe use that.
   } catch(err){
     console.log(err);
   }
 }
+//TODO test
+export function* delAllConfig(action){
+  try{
+    yield call(request.delete, (BASE_URL_APP_P + action.id + '/configurationkeys'));
+    yield put(ac.getApplicationData(action.id))
+  } catch(e){
+    console.log(e);
+  }
+}
+/**
+ * Operator
+ */
 export function* getOperations(){
   try {
     const data = yield call(request.get, (BASE_URL + 'operators'))
@@ -88,7 +111,7 @@ export function* getOperations(){
 }
 export function* postRangeKey(action){
   try{
-    yield call(request.post, (BASE_URL + "applications/"+ action.payload.appId+
+    yield call(request.post, (BASE_URL_APP_P + action.payload.appId+
     "/configurationkeys/" + action.payload.constkey + "/rangeconstraints"),
      {
        configurationkey_id: action.payload.constkey,
@@ -101,19 +124,23 @@ export function* postRangeKey(action){
 }
 export function* deleteRangeKey(action){
   try{
-    yield call(request.delete, (BASE_URL + "applications/"+ action.payload.appId+
+    yield call(request.delete, (BASE_URL_APP_P + action.payload.appId+
     "/configurationkeys/" + action.payload.constkey + "/rangeconstraints/" + action.payload.rangeKey))
     yield put(ac.getApplicationData(action.payload.appId))
   } catch(e){
     console.log(e);
   }
 }
+
 /**
  * Since you have to tell saga how you want your actions handled
  * there needs to some listerner methods.
  * takeEvery means saga creates buffer and listens every one incoming actions
  * and handles them one by one.
  */
+function* deleteAllConfigKeysSaga(){
+  yield* takeEvery('DELETE_ALL_CONFIG',delAllConfig)
+}
 
 function* deleteConfigKeySaga(){
      yield* takeEvery("DELETE_CONFIGURATION_KEY", delConfig);
@@ -152,6 +179,7 @@ export function* rootSaga() {
     yield[
         getApplicationDataSaga(),getApplicationsSaga(),postSaga(),
         deleteApplicationSaga(), deleteConfigKeySaga(),postConfigKeySaga(),
-        getOperationsSaga(),postRangeKeySaga(),deleteRangeKeySaga()]
+        getOperationsSaga(),postRangeKeySaga(),deleteRangeKeySaga(),
+        deleteAllConfigKeysSaga()]
 
 }

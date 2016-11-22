@@ -68,6 +68,12 @@ export function deleteRangeKey(payload){
     payload
   }
 }
+export function deleteAllConfigKeys(id){
+  return {
+    type: 'DELETE_ALL_CONFIG',
+    id
+  }
+}
 
 /*
 * Following are actions creators for reducer to handle state.

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
 
-import { deleteApplication } from '../../../actions/action_creators';
+import { deleteApplication, deleteAllConfigKeys } from '../../../actions/action_creators';
 import { DataBox } from '../../generals/Generals.jsx'
 import { Modal, openModal, closeModal } from "../../generals/Modal.jsx";
 export class DangerZone extends Component{
@@ -27,6 +27,7 @@ export class DangerZone extends Component{
                 </div>}
              />
             <button onClick={() => openModal("deleteApplication")}>Delete this app </button>
+            <button onClick={() => this.props.onDeleteConfigKeysClick(this.props.app.id)}>Delete All Configuration Keys</button>
           </div>} />
     )
   }
@@ -37,6 +38,9 @@ const mapDispatchToProps = (dispatch, ownProps) =>{
     onDeleteClick: (id) => {
       ownProps.router.push("/applications")
       dispatch(deleteApplication(id));
+    },
+    onDeleteConfigKeysClick: (id) => {
+      dispatch(deleteAllConfigKeys(id))
     }
   }
 }
