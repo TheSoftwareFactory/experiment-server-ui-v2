@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-
+import { Link } from 'react-router'
 import { DataBox } from '../../generals/Generals.jsx'
 
 export default class Overview extends Component{
@@ -18,6 +18,7 @@ export default class Overview extends Component{
             <p>
               UUID: AHSD-123H-12HS-123F-ASDJ
             </p>
+            <Link to={'/applications/' + this.props.app.id + "/experiments" } activeClassName="active">Experiments</Link>
           </div>
         } />
     )
