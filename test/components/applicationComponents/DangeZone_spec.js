@@ -19,7 +19,7 @@ describe("Danger Zone",()=>{
     expect(heading3.length).to.equal(1); // 3 in modal + 1 in core
     expect(heading3[0].textContent).to.equal('Danger Zone');
 
-    expect(buttons.length).to.equal(4); // 3 in modal + 1 in core
+    expect(buttons.length).to.equal(5); // 3 in modal + 1 in core
     expect(buttons[1].textContent).to.equal('Delete Application');
   })
 })
