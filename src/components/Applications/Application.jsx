@@ -11,6 +11,7 @@ import Overview from './applicationComponents/Overview.jsx';
 import { ConfigurationKeysContainer } from './applicationComponents/ConfigurationKeys.jsx';
 import { RangeConstraintsContainer }  from './applicationComponents/RangeConstraints.jsx';
 import { DangerZoneContainer } from './applicationComponents/DangerZone.jsx';
+import { ExConstBase } from './applicationComponents/ExclusionConstraints.jsx';
 
 export class ApplicationBase extends Component {
 
@@ -27,7 +28,9 @@ export class ApplicationBase extends Component {
         <Overview {...this.props} />
         <ConfigurationKeysContainer {...this.props} />
         <RangeConstraintsContainer {...this.props} />
+        <ExConstBase {...this.props} />
         <DangerZoneContainer {...this.props}/>
+
     </div>
     )
   }
