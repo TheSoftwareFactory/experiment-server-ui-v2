@@ -16,7 +16,7 @@ export default class Overview extends Component{
               </div>)
             })}
             <p>
-              UUID: AHSD-123H-12HS-123F-ASDJ
+              API-key: {this.props.app.apikey}
             </p>
             <Link to={'/applications/' + this.props.app.id + "/experiments" } activeClassName="active">Experiments</Link>
           </div>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
-import { getApplicationData } from '../../actions/action_creators';
+import { getApplicationData } from '../../actions/applicationAsycAC';
 
 /**
  * Components for this class.

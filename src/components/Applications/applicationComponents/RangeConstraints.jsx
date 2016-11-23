@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
 
-import { postRangeKey, deleteRangeKey }  from '../../../actions/action_creators';
+import { postRangeKey, deleteRangeKey }  from '../../../actions/applicationAsycAC';
 import { DataBox } from '../../generals/Generals.jsx'
 import { Modal, openModal, closeModal } from "../../generals/Modal.jsx";
 

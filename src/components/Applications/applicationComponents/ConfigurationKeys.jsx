@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux';
 
-import { deleteConfigKey, postConfigKey }  from '../../../actions/action_creators';
+import { deleteConfigKey, postConfigKey }  from '../../../actions/applicationAsycAC.js';
 import { DataBox } from '../../generals/Generals.jsx'
 import { Modal, openModal, closeModal } from "../../generals/Modal.jsx";
 export class ConfigurationKeys extends Component{
