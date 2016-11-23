@@ -1,6 +1,6 @@
 import { call, put, take } from 'redux-saga/effects'
 import request from 'axios'
-import {assert} from 'chai'
+import { assert } from 'chai'
 
 import * as saga from '../../src/sagas/sagas.js'
 import * as ac from '../../src/actions/action_creators.js'

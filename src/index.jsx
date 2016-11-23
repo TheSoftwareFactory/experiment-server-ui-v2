@@ -2,15 +2,16 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router } from 'react-router';
-
-import { getExperimentsSaga } from './sagas/experimentSagas.js';
-import { rootSaga } from './sagas/sagas.js';
+import { getOperationsSaga } from './sagas/operations/operatorSaga.js';
+import { getExperimentsSaga } from './sagas/experiments/experimentSagas.js';
+import applicationRootSaga from './sagas/applications/applicationRootSaga.js';
 import getRoutes from './routes.jsx'
 import { sagaMiddleware, store, history } from './helpers/initHelper.js'
 
 //start Sagas.
-sagaMiddleware.run(rootSaga);
+sagaMiddleware.run(applicationRootSaga);
 sagaMiddleware.run(getExperimentsSaga)
+sagaMiddleware.run(getOperationsSaga)
 
 // To load unchangeable data to store.
  store.dispatch({type: 'GET_OPERATIONS'});

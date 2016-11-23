@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fromJS } from 'immutable';
 import { Link } from 'react-router'
 
-import { getApplications, postApplication,deleteApplication } from '../../actions/action_creators.js'
+import { getApplications, postApplication,deleteApplication } from '../../actions/applicationAsycAC.js'
 import { Header } from "../generals/Generals.jsx";
 import { closeModal, Modal, openModal } from "../generals/Modal.jsx";
 

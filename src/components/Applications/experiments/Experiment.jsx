@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
 
-import { getExperiments } from '../../../actions/experiment_action_creators.js'
+import { getExperiments } from '../../../actions/experimentAC'
 import { DataBox, SubHeader } from '../../generals/Generals.jsx';
 export class ExperimentBase extends Component{
 
