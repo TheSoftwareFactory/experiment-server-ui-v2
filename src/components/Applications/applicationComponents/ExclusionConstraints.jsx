@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { DataBox } from '../../generals/Generals.jsx';
-
+import { postExclConsAction, deleteExclConsAction }  from '../../../actions/applicationAsycAC';
 
 export class ExclusionConstraints extends Component{
 
@@ -14,10 +14,25 @@ mapKeys(configId){
   return a ? a : "";
 }
 mapOperations(opId){
-  if(this.props.operations[opId -1]  ){
-    return this.props.operations[opId -1].human_value;
+    return (this.props.operations[opId -1] ? this.props.operations[opId -1].human_value : "");
+}
+postData(){
+  const appId = this.props.app.id;
+  const configId = this.refs.constkey1.value;
+  const config2 = this.refs.constkey2.value;
+  const value1 = this.refs.value1.value;
+  const value2 = this.refs.value2.value;
+  const firstOpKey = this.refs.operator1.value;
+  const secondOpKey = this.refs.operator2.value;
+  let payload = {
+  "first_configurationkey_id": configId,
+  "first_operator_id": firstOpKey,
+  "first_value_a": value1,
+  "second_configurationkey_id": config2,
+  "second_operator_id": secondOpKey,
+  "second_value_a": value2,
   }
-    return ""
+  this.props.onPostExcl({app: appId, payload: payload});
 }
 
   render(){
@@ -36,7 +51,11 @@ mapOperations(opId){
                    {this.mapOperations(excl.second_operator_id)}
                    { excl.second_value_a ? excl.second_value_a : "" }
                    { excl.second_value_b ? excl.second_value_b : "" }
-                   <div></div>
+                   <div><button onClick={ ()=>{
+                       this.props.onDeleteExclClick(this.props.app.id,
+                          excl.first_configurationkey_id,
+                        excl.id)
+                     } }>Delete Exclusion Constraint</button></div>
                </div>
             })}
             {"if"}  <select ref="constkey1">
@@ -61,7 +80,8 @@ mapOperations(opId){
                    return <option key={"opExc2"+op.id} value={op.id}>{op.human_value}</option>
                  })}
                </select>
-               <input type="text" ref="value1"></input>
+               <input type="text" ref="value2"></input>
+               <button onClick={() => this.postData()}>Paina tästä</button>
           </div>
         }
         ></DataBox>
@@ -70,11 +90,13 @@ mapOperations(opId){
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    onDeleteExclClick: (appId, ckId, exclId) =>{
+      dispatch(deleteExclConsAction({appId: appId, ckId: ckId, exclId: exclId}));
+    },
+    onPostExcl: (payload) =>{
+      dispatch(postExclConsAction(payload));
+    }
   }
 }
-function mapStateToProps(state){
-  return {}
-}
 
-export const ExConstBase = connect(mapStateToProps,mapDispatchToProps)(ExclusionConstraints);
+export const ExConstBase = connect(null,mapDispatchToProps)(ExclusionConstraints);

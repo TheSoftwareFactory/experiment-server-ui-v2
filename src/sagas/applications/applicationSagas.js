@@ -29,7 +29,6 @@ export function* getApps() {
   } catch (err) {
     put(ac.setState( [] ));
   }
-
 }
 
 export function* postApp(action){
