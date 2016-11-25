@@ -1,3 +1,6 @@
+/**
+ * Application Data
+ */
 export function getApplications() {
   return {
     type: 'GET_APPLICATIONS'
@@ -22,6 +25,9 @@ export function getApplicationData(id) {
     id
   };
 }
+/**
+ * Config keys
+ */
 export function deleteConfigKey(data) {
   return {
     type: 'DELETE_CONFIGURATION_KEY',
@@ -34,6 +40,15 @@ export function postConfigKey(data) {
     data
   };
 }
+export function deleteAllConfigKeys(id){
+  return {
+    type: 'DELETE_ALL_CONFIG',
+    id
+  }
+}
+/**
+ * Range Keys
+ */
 export function postRangeKey(payload){
   return {
     type: 'POST_RANGE',
@@ -46,9 +61,18 @@ export function deleteRangeKey(payload){
     payload
   }
 }
-export function deleteAllConfigKeys(id){
+/**
+ * ExclusionConstraints
+ */
+export function postExclConsAction(data){
   return {
-    type: 'DELETE_ALL_CONFIG',
-    id
+    type: 'POST_EXCL_CONST',
+    data
+  }
+}
+export function deleteExclConsAction(payload){
+  return {
+    type: 'DELETE_EXCL_CONST',
+    payload
   }
 }

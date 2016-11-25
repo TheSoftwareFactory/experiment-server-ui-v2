@@ -1,6 +1,8 @@
 import { postRangeKeySaga, deleteRangeKeySaga  } from './rangeConstrainsSagas.js'
 import { deleteAllConfigKeysSaga, postConfigKeySaga, deleteConfigKeySaga  } from './configurationKeysSagas.js'
 import { getApplicationDataSaga,getApplicationsSaga,postApplicationSaga,deleteApplicationSaga } from './applicationSagas.js'
+import { postExclConsSaga, deleteExclConsSaga} from './exclusionConstraintsSaga.js'
+
 
 export default function* () {
     yield[
@@ -13,5 +15,7 @@ export default function* () {
         deleteAllConfigKeysSaga(),
         postRangeKeySaga(),
         deleteRangeKeySaga(),
+        postExclConsSaga(),
+        deleteExclConsSaga()
       ]
 }
