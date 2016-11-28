@@ -4,9 +4,7 @@ body{
   margin-left: 10px;
   margin-right: 10px;
   font-family: 'Montserrat', sans-serif;
-}
-body:first-child{
-  padding:
+  padding: 0px;
 }
 #id {
   min-height: 800px;
@@ -42,26 +40,61 @@ body:first-child{
   background-color: #FFFFFF;
   box-shadow: 0 0 7px 2px gray;
 }
+.DB > h3 {
+  text-align: center;
+}
+.Databox{
+  margin: 10px;
+  display: flex;
+  flex-grow: row;
+  min-height: 200px;
+  flex-wrap: wrap;
+  background-color: #FFFFFF;
+  box-shadow: 0 0 7px 2px gray;
+  padding: 10px;
+}
+.dbContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.dbContent > .left {
+  flex: 1 0 300px;
+}
+.dbContent > .left > h4 {
+  margin: 0px;
+}
+.dbContent > .right {
+  flex: 1 0 300px;
+  margin: 0px;
+}
 .Application{
   flex: 1 0 20%;
-  margin: 10px;
+  margin: 0px;
 }
 .ApplicationBox {
   display: flex;
   flex-wrap: wrap;
-  background-color: grey;
+  border-color: #3652f1;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 20px;
   height: 100px;
   width: 125px;
   align-items: center;
   justify-content: center;
+  background-color: #b2b8dc;
+  margin: 0px;
 }
-.ApplicationBox > h4{
-  flex: 1 0 100%
+.Application > a{
   padding: 5px;
+  text-decoration: none;
+  color: black;
+  float: left;
+  clear: both
 }
-.ApplicationBox > button{
-  flex: 1 0 50%
-}
+
+
 .ApplicationHeader{
   display: flex;
   flex-wrap: wrap;

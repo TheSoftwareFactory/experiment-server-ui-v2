@@ -8,16 +8,20 @@ export default class Overview extends Component{
     return(
       <DataBox heading="Overview"
         content={
-          <div>
+          <div className="dbContent">
+            <div className="left">
             <h4>Configuration Keys</h4>
+            <ul>
             {this.props.app.configurationkeys.map(key =>{
-              return(<div key={key.id}>
-                {key.name} : {key.type}
-              </div>)
+              return(<li key={key.id}>
+                {key.name} : {key.type}</li>
+              )
             })}
-            <p>
+            </ul>
+            </div>
+            <div className="right">
               API-key: {this.props.app.apikey}
-            </p>
+            </div>
             <Link to={'/applications/' + this.props.app.id + "/experiments" } activeClassName="active">Experiments</Link>
           </div>
         } />

@@ -20,8 +20,8 @@ export const SubHeader = ({heading}) =>{
   )
 }
 export const DataBox = ({heading, content}) =>{
-  return(<div>
+  return(<div className="DB">
     <h3>{heading}</h3>
-    <div className="Applications"> {content} </div>
+    <div className="Databox"> {content} </div>
   </div>)
 }
