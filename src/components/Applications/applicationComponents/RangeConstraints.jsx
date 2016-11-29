@@ -10,8 +10,9 @@ import { Modal, openModal, closeModal } from "../../generals/Modal.jsx";
 export class RangeConstraints extends Component{
 
   findRightConfigurationKey(configKeyId){
+    const id = parseInt(configKeyId);
     return this.props.app.configurationkeys.filter(key=>{
-        if(key.id === configKeyId){
+        if(key.id === id){
           return key;
         }
     })[0]
@@ -20,23 +21,18 @@ export class RangeConstraints extends Component{
   chooseInputType(keyId){
     const key = this.findRightConfigurationKey(parseInt(keyId,10));
 
-    if(key.type === "Integer"){
+    if( key.type === "Integer" ){
       return   (<div><input ref="value" type={"number"} /> Integer</div>)
     }
-    if(key.type=== "boolean"){
-      return   (<form>
-          <input ref="value" type="radio" name="true" value="true" />True
-          <input ref="value" type="radio" name="false" value="false" />False
-         </form>)
-    }
-    if(key.type=== "String"){
+    if( key.type === "string" ){
       return   (<div><input ref="value" type="text" /> Text</div>)
     }
-    if(key.type=== "Float"){
-      return   (<div><input ref="value" type="number" step="0.01" /> Float (0.01)</div>)
-    }
-
+    if( key.type === "Float" ){
+      return   (<div> <input ref="value" type="number" step="0.01" /> Float (0.01)
+    </div>)
+    } else return <div></div>
   }
+
   listRanges(rconst){
     return(<div key={rconst.id}>
       {this.findRightConfigurationKey(rconst.configurationkey_id).name}:
@@ -53,10 +49,13 @@ export class RangeConstraints extends Component{
     </p>)
   }
 
-  chooseOperation(){
+  chooseOperation(constkey){
+    const key = this.findRightConfigurationKey(constkey);
     return(<select ref="operator"> {this.props.operations.map(op=>{
-      if(op.id > 1 && op.id < 6 ){
+      if(key.type==="string" && [1,6].includes(op.id)){
           return (<option key={"opRange" + op.id} value={op.id} >{op.human_value}</option>)
+      } if(key.type!=="string" && op.id>1 && op.id < 6){
+        return (<option key={"opRange" + op.id} value={op.id} >{op.human_value}</option>)
       }
     })}
   </select>)
@@ -71,7 +70,11 @@ export class RangeConstraints extends Component{
     try {
       constkey = this.refs.constkey.value;
     } catch (e) {
-      constkey = this.props.app.configurationkeys[0].id
+      constkey = this.props.app.configurationkeys.filter(key=>{
+        if(key.type !== "boolean"){
+          return key
+        }
+      })[0].id
     } finally {
       return (<div> <select onChange={()=>this.forceUpdate()} ref="constkey">
         {this.props.app.configurationkeys.map(key=>{
@@ -79,10 +82,8 @@ export class RangeConstraints extends Component{
             return (<option value={key.id} key={key.id + "configKey"}>
                 {key.name}
               </option> )}})}
-
-
        </select>
-       {this.chooseOperation()}
+       {this.chooseOperation(constkey)}
        {this.chooseInputType(constkey)}
        </div>)
     }
@@ -106,7 +107,7 @@ export class RangeConstraints extends Component{
             {this.props.app.rangeconstraints.map(rconst=>{
               return (this.listRanges(rconst))
             })}
-             {this.addNewRange()}
+            {this.addNewRange()}
             {this.postButton()}
 
           </div>
@@ -114,7 +115,9 @@ export class RangeConstraints extends Component{
     )
   }
 }
-
+/**
+ * Maybe add RangeProps where are are limited config keys and limited operators.
+ */
 const mapDispatchToProps = (dispatch) =>{
  return {
    onRangeClick: (constkey, operator,value, appId) => {
