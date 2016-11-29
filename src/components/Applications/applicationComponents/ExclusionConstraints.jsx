@@ -5,6 +5,37 @@ import { postExclConsAction, deleteExclConsAction }  from '../../../actions/appl
 
 export class ExclusionConstraints extends Component{
 
+  chooseInputType(refid){
+    const key = this.chooseConstKey(refid)
+    if (key.type === "boolean"){
+        return   (<div><input ref={"value" + refid} type="radio" /> True </div>)
+    }
+    if(key.type === "Integer"){
+      if(this.refs["operator" + refid]){
+        console.log(this.refs["operator" + refid].value);
+        if(["7","8"].includes(this.refs["operator" + refid].value)){
+          console.log("moi");
+          return (<div><input ref={"value" + refid} type="number" /> Integer
+          <input ref={"value" + refid} type="number" /> Integer</div>)
+        }
+      }
+      return   (<div><input ref={"value" + refid} type="number" /> Integer</div>)
+    }
+    if(key.type=== "string"){
+      return   (<div><input ref={"value" + refid} type="text" /> Text</div>)
+    }
+    if(key.type=== "Float"){
+      if(this.refs["operator" + refid]){
+        if([7,8].includes(this.refs["operator" + refid].value)){
+          return (<div><input ref={"value" + refid} type="number" /> Integer
+          <input ref={"value" + refid} type="number" /> Integer</div>)
+        }
+      }
+      return   (<div><input ref={"value" + refid} type="number" step="0.01" /> Float (0.01)</div>)
+    }
+  }
+
+
 mapKeys(configId){
   let a = this.props.app.configurationkeys.filter(key=>{
     if(key.id === configId){
@@ -14,7 +45,42 @@ mapKeys(configId){
   return a ? a : "";
 }
 mapOperations(opId){
+
     return (this.props.operations[opId -1] ? this.props.operations[opId -1].human_value : "");
+}
+chooseConstKey(refId){
+  let constkey;
+  try {
+     constkey = this.refs["constkey"+refId].value;
+  } catch (e) {
+     constkey = this.props.app.configurationkeys[0].id
+  } finally {
+    const key = this.mapKeys(parseInt(constkey,10));
+    console.log(key);
+    return key;
+}
+}
+chooseOperations(refId){
+  const key = this.chooseConstKey(refId);
+  let listOfIds;
+  if(key.type === "string" || key.type === "boolean"){
+    listOfIds = [1,6]
+  } else {
+    listOfIds = [1,2,3,4,5,6,7,8]
+  }
+  if(parseInt(refId,10) === 2){
+    /**
+     * If this is later part add must defines and must not defines.
+     */
+    listOfIds.push(9);
+    listOfIds.push(10);
+  }
+return( <select onChange={()=>this.forceUpdate()} ref={ "operator" + refId }>
+      {this.props.operations.map(op=>{
+        if(listOfIds.includes(op.id))
+        return <option key={"opExc1"+op.id} value={op.id}>{op.human_value}</option>
+      })}
+    </select>)
 }
 postData(){
   const appId = this.props.app.id;
@@ -35,6 +101,9 @@ postData(){
   this.props.onPostExcl({app: appId, payload: payload});
 }
 
+/**
+ * Refactor a lot.
+ */
   render(){
     return (<DataBox
         heading="Exclusion Constraints"
@@ -58,29 +127,23 @@ postData(){
                      } }>Delete Exclusion Constraint</button></div>
                </div>
             })}
-            {"if"}  <select ref="constkey1">
+            {"if"}  <select onChange={()=>this.forceUpdate()} ref="constkey1">
                 {this.props.app.configurationkeys.map(key=>{
                   return <option key={"keyExc1" + key.id} value={key.id}>{key.name}</option>
                 })}
               </select>
-              <select ref="operator1">
-                {this.props.operations.map(op=>{
-                  return <option key={"opExc1"+op.id} value={op.id}>{op.human_value}</option>
-                })}
-              </select>
-              <input type="text" ref="value1"></input>
-              {"then"}
-              <select ref="constkey2">
+              {this.chooseOperations(1)}
+              {this.chooseInputType(1)}
+              <div></div>
+              then
+              <div></div>
+              <select onChange={()=>this.forceUpdate()} ref="constkey2">
                  {this.props.app.configurationkeys.map(key=>{
                    return <option key={"keyExc2" + key.id} value={key.id}>{key.name}</option>
                  })}
                </select>
-               <select ref="operator2">
-                 {this.props.operations.map(op=>{
-                   return <option key={"opExc2"+op.id} value={op.id}>{op.human_value}</option>
-                 })}
-               </select>
-               <input type="text" ref="value2"></input>
+               {this.chooseOperations(2)}
+               {this.chooseInputType(2)}
                <button onClick={() => this.postData()}>Paina tästä</button>
           </div>
         }
