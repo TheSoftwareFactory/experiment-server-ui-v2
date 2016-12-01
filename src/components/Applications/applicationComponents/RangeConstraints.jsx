@@ -88,6 +88,20 @@ export class RangeConstraints extends Component{
        </div>)
     }
   }
+  checkIfEmpty(){
+    if(this.props.app.configurationkeys.length === 0){
+      return (<div>Please add Configration Keys first.</div>)
+    } else {
+      return (          <div>
+                  {this.props.app.rangeconstraints.map(rconst=>{
+                    return (this.listRanges(rconst))
+                  })}
+                  {this.addNewRange()}
+                  {this.postButton()}
+
+                </div>)
+    }
+  }
 /*
 
  <input type={this.chooseInputType()} />
@@ -102,16 +116,7 @@ export class RangeConstraints extends Component{
   render(){
     return(
       <DataBox heading="Range Constrains"
-        content={
-          <div>
-            {this.props.app.rangeconstraints.map(rconst=>{
-              return (this.listRanges(rconst))
-            })}
-            {this.addNewRange()}
-            {this.postButton()}
-
-          </div>
-        } />
+        content={ this.checkIfEmpty() } />
     )
   }
 }
