@@ -44,11 +44,36 @@ export class RangeConstraints extends Component{
  </div>)
   }
   postButton(){
-    return(<p>
-      <button onClick={() => this.props.onRangeClick(this.refs.constkey.value, this.refs.operator.value, this.refs.value.value, this.props.app.id )}>Post Range</button>
-    </p>)
-  }
 
+    return(<p>
+      <button  onClick={()=>this.checkValid()}>Ei tee mitään</button></p>)
+  }
+  /**
+   * I dont't even know what I am trying to do
+   */
+  checkValid(){
+    if(this.refs.value.value == ""){
+      return;
+    }
+
+    let errors = 0;
+    for (var i = 0; i < this.props.app.rangeconstraints.length; i++) {
+      if(this.props.app.rangeconstraints[i].configurationkey_id == this.refs.constkey.value){
+        if( eval(this.props.app.rangeconstraints[i].value + this.props.operations[this.refs.operator.value - 1].math_value + this.refs.value.value)){
+        } else {
+          errors++
+        }
+      }
+    }
+    if(errors > 0){
+      alert("please check your ranges");
+      this.refs.value.value = "";
+    } else{
+      this.props.onRangeClick(this.refs.constkey.value, this.refs.operator.value, this.refs.value.value, this.props.app.id )
+      this.refs.value.value = "";
+    }
+  }
+////) => this.props.onRangeClick(this.refs.constkey.value, this.refs.operator.value, this.refs.value.value, this.props.app.id )}>Post Range</button>
   chooseOperation(constkey){
     const key = this.findRightConfigurationKey(constkey);
     return(<select ref="operator"> {this.props.operations.map(op=>{
@@ -102,17 +127,7 @@ export class RangeConstraints extends Component{
                 </div>)
     }
   }
-/*
 
- <input type={this.chooseInputType()} />
-*/
-
-  /**
-   * so here we need to make <select> tag for each kind of key name
-   * and then based on selected name we need to select input type.
-   * and then maybe make this a function.
-  * FILTER something somethig something.
-   */
   render(){
     return(
       <DataBox heading="Range Constrains"

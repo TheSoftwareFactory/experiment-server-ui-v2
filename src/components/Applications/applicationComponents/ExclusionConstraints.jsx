@@ -10,30 +10,33 @@ import { postExclConsAction, deleteExclConsAction }  from '../../../actions/appl
 export class ExclusionConstraints extends Component{
 
   chooseInputType(refid){
+    const ref = "operator" + ref;
+    const refA = "value" + refid +"a";
+    const refB = "value" + refid +"b"
     const key = this.chooseConstKey(refid)
     if (key.type === "boolean"){
-        return   (<div><input ref={"value" + refid} type="radio" /> True </div>)
+        return   (<div><input ref={refA} type="radio" /> True </div>)
     }
     if(key.type === "Integer"){
-      if(this.refs["operator" + refid]){
-        if(["7","8"].includes(this.refs["operator" + refid].value)){
-          return (<div><input ref={"value" + refid + "a"} type="number" /> Integer
-          <input ref={"value" + refid + "b"} type="number" /> Integer</div>)
+      if(this.refs[ref]){
+        if(["7","8"].includes(this.refs[ref].value)){
+          return (<div><input ref={refA} type="number" /> Integer
+          <input ref={refB} type="number" /> Integer</div>)
         }
       }
-      return   (<div><input ref={"value" + refid + "a"} type="number" /> Integer</div>)
+      return   (<div><input ref={refA} type="number" /> Integer</div>)
     }
     if(key.type=== "string"){
-      return   (<div><input ref={"value" + refid} type="text" /> Text</div>)
+      return   (<div><input ref={refA} type="text" /> Text</div>)
     }
     if(key.type=== "Float"){
-      if(this.refs["operator" + refid]){
-        if(["7","8"].includes(this.refs["operator" + refid].value)){
-          return (<div><input ref={"value" + refid + "a"} type="number" /> Float
-          <input ref={"value" + refid + "b"} type="number" step="0.01"/> Float</div>)
+      if(this.refs[ref]){
+        if(["7","8"].includes(this.refs[ref].value)){
+          return (<div><input ref={refA} type="number" /> Float
+          <input ref={refB} type="number" step="0.01"/> Float</div>)
         }
       }
-      return   (<div><input ref={"value" + refid + "a" } type="number" step="0.01" /> Float (0.01)</div>)
+      return   (<div><input ref={refA} type="number" step="0.01" /> Float (0.01)</div>)
     }
   }
 
@@ -96,12 +99,10 @@ postData(){
   let payload = {
     "first_configurationkey_id": parseInt(constkey1,10),
     "first_operator_id": parseInt(operator1,10),
-    "first_value_a": value1,
-    "first_value_b": value1b,
+    "first_value": [value1,value1b],
     "second_configurationkey_id": parseInt(constkey2,10),
     "second_operator_id": parseInt(operator2,10),
-    "second_value_a": value2,
-    "second_value_b": value2b
+    "second_value": [value2,value2b]
   }
   this.props.onPostExcl({app: appId, payload: payload});
 }
