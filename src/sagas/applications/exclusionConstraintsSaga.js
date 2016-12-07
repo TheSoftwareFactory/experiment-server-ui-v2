@@ -8,10 +8,9 @@ import { getApplicationData } from '../../actions/applicationAsycAC.js'
 const BASE_URL = 'http://experiment-server2016.herokuapp.com/applications/'
 
 export function* postExclCons(action){
-  console.log(action);
   try{
-    yield call(request.post, (BASE_URL + action.data.appId  + "/exclusionconstraints" ),action.data.payload);
-    yield put(getApplicationData(action.data.appId))
+    yield call(request.post, (BASE_URL + action.data.app  + "/exclusionconstraints" ),action.data.payload);
+    yield put(getApplicationData(action.data.app))
   } catch(e){
     console.log(e);
   }

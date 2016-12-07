@@ -15,12 +15,12 @@ import { closeModal, Modal, openModal } from "../generals/Modal.jsx";
 export const ApplicationSmallBox = ({ name, id, onDeleteClick }) => {
     return (
       <div className="Application" key={name}>
+        <Link to={'/applications/' + id } activeClassName="active">
         <div className="ApplicationBox">
-          <h4>{name}</h4>
-          <p>
-          <Link to={'/applications/' + id } activeClassName="active">Nappi</Link>
-          </p>
-        </div>
+          {name}
+          </div>
+        </Link>
+
     </div>)
 }
 

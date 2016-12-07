@@ -5,23 +5,23 @@ import React from 'react'
  * TODO Innovate better name for class. :P
  */
 
-export const Header = ({heading}) =>{
+export const Header = ({ heading }) =>{
   return(
     <header className="headerBox">
       <h3>{heading}</h3>
       </header>
   )
 }
-export const SubHeader = ({heading}) =>{
+export const SubHeader = ({ heading }) =>{
   return(
     <div className="ApplicationHeader">
       <h3>{heading}</h3>
       </div>
   )
 }
-export const DataBox = ({heading, content}) =>{
-  return(<div>
+export const DataBox = ({ heading, content }) =>{
+  return(<div className="DB">
     <h3>{heading}</h3>
-    <div className="Applications"> {content} </div>
+    <div className="Databox"> {content} </div>
   </div>)
 }
