@@ -14,7 +14,7 @@
     "Redux-Saga",
     "Frontend"
   ],
-  "author": "Timo Tuononen",
+  "author": "Software Factory",
   "license": "MIT",
   "babel": {
     "presets": [

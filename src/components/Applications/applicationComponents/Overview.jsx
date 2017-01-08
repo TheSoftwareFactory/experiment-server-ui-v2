@@ -4,6 +4,9 @@ import { DataBox } from '../../generals/Generals.jsx'
 
 export default class Overview extends Component{
 
+  /**
+   * Renders first box in application view. Uses DataBox HOC.
+   */
   render(){
     return(
       <DataBox heading="Overview"

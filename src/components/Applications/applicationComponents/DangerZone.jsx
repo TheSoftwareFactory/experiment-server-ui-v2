@@ -4,6 +4,10 @@ import { connect } from 'react-redux';
 import { deleteApplication, deleteAllConfigKeys } from '../../../actions/applicationAsycAC.js';
 import { DataBox } from '../../generals/Generals.jsx'
 import { Modal, openModal, closeModal } from "../../generals/Modal.jsx";
+
+/**
+ * DataBox class for all the nasty deleting stuff. 
+ */
 export class DangerZone extends Component{
 
   render(){

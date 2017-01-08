@@ -5,10 +5,14 @@ import { postExclConsAction, deleteExclConsAction }  from '../../../actions/appl
 
 /**
  * This class is terrible. Try find time to refactor it to better.
+ * purpose of this class is to render ExclusionConstraints and add possibility to more of them.
  */
 
 export class ExclusionConstraints extends Component{
 
+/**
+ * Chooses what type of input is expected
+ */
   chooseInputType(refid){
     const ref = "operator" + ref;
     const refA = "value" + refid +"a";
@@ -40,18 +44,30 @@ export class ExclusionConstraints extends Component{
     }
   }
 
+/**
+ * To map right keyId to right key.
+ * TODO this same function is also implemented in other clases.
+ * TODO move this upper and add use only one.
+ * TODO I think Array.prototype.find would be better than Array.prototype.filter here.
+ */
 mapKeys(configId){
   let a = this.props.app.configurationkeys.filter(key=>{
     if(key.id === configId){
       return key
     }
   })[0];
-  return a ? a : "";
+  return a ? a : ""; //if there is nothing return empty string
 }
+/**
+ * Map operationId to operation Object.
+ */
 mapOperations(opId){
     return (this.props.operations[opId -1] ? this.props.operations[opId -1].human_value : "");
 }
-
+/**
+ * Using id find configKey.
+ * TODO
+ */
 chooseConstKey(refId){
   let constkey;
   try {
@@ -63,6 +79,11 @@ chooseConstKey(refId){
     return key;
   }
 }
+/**
+ * Since for Configuration keys have static types only subset of all operators are available to use
+ * this function uses opeators IDs to choose that only right operators are avainlable for certain
+ * Configuration Key.
+ */
 chooseOperations(refId){
   const key = this.chooseConstKey(refId);
   let listOfIds;
@@ -85,6 +106,9 @@ return( <select onChange={()=>this.forceUpdate()} ref={ "operator" + refId }>
       })}
     </select>)
 }
+/**
+ * First gather data from refs and then dispatch it.
+ */
 postData(){
   const appId = this.props.app.id;
   const constkey1 = this.refs.constkey1.value;
@@ -107,6 +131,12 @@ postData(){
   this.props.onPostExcl({app: appId, payload: payload});
 }
 
+/**
+ * Poorly named function.
+ * check if there are any configurationkeys and depending on that renders
+ * either core or empty div.
+ * TODO Should move core-rendering to some other function.
+ */
 checkIfEmpty(){
   if(this.props.app.configurationkeys.length === 0 ){
     return <div>Please insert configurationkeys first</div>
@@ -129,7 +159,7 @@ checkIfEmpty(){
                } }>Delete Exclusion Constraint</button></div>
          </div>
       })}
-      {"if"}  <select onChange={()=>this.forceUpdate()} ref="constkey1">
+      {"if"}  <select onChange={()=>this.forceUpdate()} ref="constkey1"> //{"if"} since this is jsx and I only want string "if".
           {this.props.app.configurationkeys.map(key=>{
             return <option key={"keyExc1" + key.id} value={key.id}>{key.name}</option>
           })}

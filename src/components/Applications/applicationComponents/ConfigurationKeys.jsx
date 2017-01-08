@@ -4,6 +4,13 @@ import { connect } from 'react-redux';
 import { deleteConfigKey, postConfigKey }  from '../../../actions/applicationAsycAC.js';
 import { DataBox } from '../../generals/Generals.jsx'
 import { Modal, openModal, closeModal } from "../../generals/Modal.jsx";
+
+/**
+ * Kinda simple class just to show all config keys and add delete modal for each
+ * also includes button for adding them.
+ * TODO maybe better if creating modal would be in one function and creating a
+ * post button in one. 
+ */
 export class ConfigurationKeys extends Component{
 
   render(){

@@ -1,6 +1,11 @@
 import React, { Component, PropTypes } from 'react';
 
-
+/**
+ * This is a base component for Modals. This offers methods for opening and
+ * closing component and very basic structure of modal.
+ * to use import everything you need and just provide content and modalId as
+ * props. ID need to be unique string, so open and close modal functions work. 
+ */
 
 export const openModal = modalId => {
     document.getElementById(modalId).style.display = "block"

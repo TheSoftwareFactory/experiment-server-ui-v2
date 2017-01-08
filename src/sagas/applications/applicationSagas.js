@@ -12,6 +12,9 @@ const BASE_URL_APP_P = BASE_URL_APP + "/"
 /**
  * TODO many of sagas simply call to getApplicationData after their job is done
  * maybe it would be faster to recreate state in reducers.
+ * This causes one extra API call everytime, but helps us from a lot of work creating
+ * and updating state.
+ * "Po-ta-to, Po-tah-to".
  */
 
 /**

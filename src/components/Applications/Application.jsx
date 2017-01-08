@@ -36,8 +36,6 @@ export class ApplicationBase extends Component {
   }
 }
 
-//maybe move relevant mapping to correspongid component.
-
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onLoad: () => {

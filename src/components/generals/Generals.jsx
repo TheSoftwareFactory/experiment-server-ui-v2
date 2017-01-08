@@ -5,6 +5,7 @@ import React from 'react'
  * TODO Innovate better name for class. :P
  */
 
+//Takes heading as props and creates a simple top header for page
 export const Header = ({ heading }) =>{
   return(
     <header className="headerBox">
@@ -12,6 +13,8 @@ export const Header = ({ heading }) =>{
       </header>
   )
 }
+
+//takes heading as props and creates subheader for page.
 export const SubHeader = ({ heading }) =>{
   return(
     <div className="ApplicationHeader">
@@ -19,6 +22,8 @@ export const SubHeader = ({ heading }) =>{
       </div>
   )
 }
+//Heading and content to create one of DataBox elements
+//There might be a room for improment here. 
 export const DataBox = ({ heading, content }) =>{
   return(<div className="DB">
     <h3>{heading}</h3>

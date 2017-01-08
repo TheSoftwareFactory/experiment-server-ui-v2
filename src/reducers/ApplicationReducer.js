@@ -1,5 +1,8 @@
 import { Map,List,fromJS } from 'immutable';
+
 //TODO Update state so that Applications are behind user.
+//TODO First implement user and user login of course.
+
 //TODO since this is allready application Reducer, we should remove silly apps map
 // use rather just List of Maps as state.
 // since in redux state this is behind applications.
