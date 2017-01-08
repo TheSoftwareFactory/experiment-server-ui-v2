@@ -9,8 +9,8 @@ const BASE_URL = 'http://experiment-server2016.herokuapp.com/applications/'
 
 export function* postExclCons(action){
   try{
-    yield call(request.post, (BASE_URL + action.data.app  + "/exclusionconstraints" ),action.data.payload);
-    yield put(getApplicationData(action.data.app))
+    yield call(request.post, (BASE_URL + action.data.appId  + "/exclusionconstraints" ),action.data.payload);
+    yield put(getApplicationData(action.data.appId))
   } catch(e){
     console.log(e);
   }

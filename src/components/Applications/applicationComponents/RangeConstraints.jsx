@@ -12,7 +12,7 @@ export class RangeConstraints extends Component{
  * To map right keyId to right key.
  * TODO this same function is also implemented in other clases.
  * TODO move this upper and add use only one.
- * TODO I think Array.prototype.find would be better than Array.prototype.filter here. 
+ * TODO I think Array.prototype.find would be better than Array.prototype.filter here.
  */
   findRightConfigurationKey(configKeyId){
     const id = parseInt(configKeyId);
@@ -63,7 +63,7 @@ export class RangeConstraints extends Component{
    */
   postButton(){
     return(<p>
-      <button  onClick={()=>this.checkValid()}>Ei tee mitään</button></p>)
+      <button  onClick={()=>this.checkValid()}>Post new Range Constraint</button></p>)
   }
   /**
    * I dont't even know what I am trying to do

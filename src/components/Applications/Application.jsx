@@ -20,7 +20,7 @@ export class ApplicationBase extends Component {
   }
 
   render() {
-    if( !(this.props.app.configurationkeys) || (!(this.props.operations)) ) return (<SubHeader heading={"...loading"} />)//indicates we have not yet loaded app details
+    if( !(this.props.app.configurationkeys) || (!(this.props.operations)) ) return (<SubHeader heading={"...loading"} />) //indicates we have not yet loaded app details
 
     return(
       <div>
